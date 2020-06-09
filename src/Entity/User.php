@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
-use \App\Entity\Post;
+use App\Entity\Post;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -95,13 +95,14 @@ class User implements UserInterface
     private $posts;
 
     /**
-     * @ORM\Column(type="json")
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="user", orphanRemoval=true)
      */
-    private $postsLiked = [];
+    private $comments;
 
     public function __construct()
     {
         $this->posts = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -309,14 +310,33 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getPostsLiked(): ?array
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getComments(): Collection
     {
-        return $this->postsLiked;
+        return $this->comments;
     }
 
-    public function setPostsLiked(array $postsLiked): self
+    public function addComment(Comment $comment): self
     {
-        $this->postsLiked = $postsLiked;
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->contains($comment)) {
+            $this->comments->removeElement($comment);
+            // set the owning side to null (unless already changed)
+            if ($comment->getUser() === $this) {
+                $comment->setUser(null);
+            }
+        }
 
         return $this;
     }
