@@ -101,14 +101,14 @@ class Post
     private $user;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $likes;
-
-    /**
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="post")
      */
     private $comments;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $likes;
 
     public function __construct()
     {

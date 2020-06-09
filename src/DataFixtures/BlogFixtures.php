@@ -4,7 +4,7 @@ namespace App\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use App\Entity\{User, Post};
+use App\Entity\{User, Post, Comment};
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class BlogFixtures extends Fixture
@@ -18,6 +18,11 @@ class BlogFixtures extends Fixture
             <p>Mollis semper feugiat natoque elit. Volutpat ultrices pharetra aliquet sagittis imperdiet velit interdum sed nibh. Fermentum faucibus fermentum non sociosqu. Ad felis vivamus diam sodales nibh dictumst cras primis tincidunt. Scelerisque purus ultricies hac consequat duis varius! Malesuada nullam eleifend diam euismod massa libero laoreet habitant aliquam torquent. Ante egestas auctor praesent. Eu dapibus arcu luctus!</p>
             <p>Libero phasellus integer netus, senectus per eros scelerisque. Orci dis eros venenatis curae; lorem rhoncus rhoncus, suspendisse velit ipsum enim netus! Penatibus ornare maecenas iaculis tempor enim suscipit mollis bibendum. Arcu cursus duis non. Mauris pulvinar posuere orci himenaeos rhoncus sagittis massa sapien risus. Eleifend per urna sodales eu viverra laoreet turpis pharetra. Nascetur placerat quam suspendisse orci pellentesque vestibulum sociosqu dictumst amet venenatis dignissim. Dictum blandit tristique sollicitudin aliquet integer sit vel senectus justo fringilla quam porta. Ante accumsan sit quisque elit, varius proin.</p>
         ';
+        $this->messages = array(
+            'I think this article looks generical',
+            'Mmm I think the content of this article seems a bit repeated',
+            'This article was made with Lorem Ipsum for sure!'
+        );
     }
 
     public function load(ObjectManager $manager)
@@ -25,16 +30,16 @@ class BlogFixtures extends Fixture
         date_default_timezone_set($this->timezone);
 
         // Admin
-        $user = new User();
-        $user->setUsername('glamit');
-        $user->setFirstName('Glamit');
-        $user->setLastName('Argentina');
-        $user->setEmail('blog.admin@glamit.com.ar');
-        $user->setRoles(['ROLE_USER', 'ROLE_ADMIN']);
-        $user->setCreatedAt(new \DateTime());
-        $password = $this->encoder->encodePassword($user, 'glamit_admin_2020');
-        $user->setPassword($password);
-        $manager->persist($user);
+        $adminUser = new User();
+        $adminUser->setUsername('glamit');
+        $adminUser->setFirstName('Glamit');
+        $adminUser->setLastName('Argentina');
+        $adminUser->setEmail('blog.admin@glamit.com.ar');
+        $adminUser->setRoles(['ROLE_USER', 'ROLE_ADMIN']);
+        $adminUser->setCreatedAt(new \DateTime());
+        $password = $this->encoder->encodePassword($adminUser, 'glamit_admin_2020');
+        $adminUser->setPassword($password);
+        $manager->persist($adminUser);
 
         // Test User 1
         $testUser1 = new User();
@@ -69,12 +74,21 @@ class BlogFixtures extends Fixture
             $post->setRejected(FALSE);
             $post->setCreatedAt(new \DateTime());
             // Assign a user as creator of the post
-            if ($i % 2 !== 0) {
-                $post->setUser($testUser1);
-            } else {
-                $post->setUser($testUser2);
-            }
+            // Odd for testUser1 / Even for textUser2
+            $creator = $i % 2 !== 0 ? $testUser1 : $testUser2;
+            $post->setUser($creator);
             $manager->persist($post);
+
+            // Addding a random comment to this post
+            $comment = new Comment();
+            $creator = $i % 2 === 0 ? $testUser1 : $testUser2; // Reassigns the comment creator
+            $comment->setUser($creator);
+            $comment->setPost($post);
+            // Set the random message
+            $message = $this->messages[random_int(0, 2)];
+            $comment->setMessage($message);
+            $comment->setCreatedAt(new \DateTime());
+            $manager->persist($comment);
         }
 
         $manager->flush();
