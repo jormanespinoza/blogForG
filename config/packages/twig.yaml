@@ -3,3 +3,8 @@ twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
     exception_controller: null
+
+    # Bundle View Paths
+    paths:
+        # Resources/Views
+        '%kernel.project_dir%/src/Resources/views': views
