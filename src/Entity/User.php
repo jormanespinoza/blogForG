@@ -68,7 +68,7 @@ class User implements UserInterface
      *      maxSize = "2048k"
      * )
      * @Assert\Image(
-     *      minWidth = 767
+     *      minWidth = 250
      * )
      * @Vich\UploadableField(mapping="user", fileNameProperty="profileImage", size="profileImageSize")
      * @var File
