@@ -35,7 +35,7 @@ class Like
      */
     private $post;
 
-    /**
+     /**
      * @ORM\Column(type="datetime")
      *
      * @var \DateTime

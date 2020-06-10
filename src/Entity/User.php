@@ -32,21 +32,34 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=120, nullable=true)
+     * @Assert\Regex("/^[a-zA-Z]+$/i",
+     *      message = "Sólo están permitidos carácteres alfábeticos"
+     * )
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=120, nullable=true)
+     * @Assert\Regex("/^[a-zA-Z]+$/i",
+     *      message = "Sólo están permitidos carácteres alfábeticos"
+     * )
      */
     private $lastName;
 
     /**
      * @ORM\Column(type="string", length=191, unique=true)
+     * @Assert\Email(
+     *     message = "La dirección de correo '{{ value }}' no es válida."
+     * )
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=30, unique=true)
+     * @Assert\Type(
+     *      type={"alpha", "digit"},
+     *      message = "Carácteres especiales o espacios no permitidos"
+     * )
      */
     private $username;
 
@@ -98,6 +111,11 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="user", orphanRemoval=true)
      */
     private $comments;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isActive;
 
     public function __construct()
     {
@@ -337,6 +355,18 @@ class User implements UserInterface
                 $comment->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIsActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): self
+    {
+        $this->isActive = $isActive;
 
         return $this;
     }

@@ -4,7 +4,6 @@ twig:
     strict_variables: '%kernel.debug%'
     exception_controller: null
 
-    # Bundle View Paths
-    paths:
-        # Resources/Views
-        '%kernel.project_dir%/src/Resources/views': views
+    form_themes:
+        - 'bootstrap_4_layout.html.twig'
+        - '@PrestaImage/form/bootstrap_4.html.twig'

@@ -4,7 +4,9 @@ namespace App\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use App\Entity\{User, Post, Comment};
+use App\Entity\User;
+use App\Entity\Post;
+use App\Entity\Comment;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class BlogFixtures extends Fixture
@@ -23,12 +25,11 @@ class BlogFixtures extends Fixture
             'Mmm I think the content of this article seems a bit repeated',
             'This article was made with Lorem Ipsum for sure!'
         );
+        date_default_timezone_set($this->timezone);
     }
 
     public function load(ObjectManager $manager)
     {
-        date_default_timezone_set($this->timezone);
-
         // Admin
         $adminUser = new User();
         $adminUser->setUsername('glamit');
@@ -39,6 +40,7 @@ class BlogFixtures extends Fixture
         $adminUser->setCreatedAt(new \DateTime());
         $password = $this->encoder->encodePassword($adminUser, 'glamit_admin_2020');
         $adminUser->setPassword($password);
+        $adminUser->setIsActive(true);
         $manager->persist($adminUser);
 
         // Test User 1
@@ -51,6 +53,7 @@ class BlogFixtures extends Fixture
         $testUser1->setCreatedAt(new \DateTime());
         $password = $this->encoder->encodePassword($testUser1, 'user1_2020');
         $testUser1->setPassword($password);
+        $testUser1->setIsActive(true);
         $manager->persist($testUser1);
 
         // Test User 2
@@ -63,6 +66,7 @@ class BlogFixtures extends Fixture
         $testUser2->setCreatedAt(new \DateTime());
         $password = $this->encoder->encodePassword($testUser2, 'user2_2020');
         $testUser2->setPassword($password);
+        $testUser2->setIsActive(true);
         $manager->persist($testUser2);
 
         // Creating example posts
@@ -71,12 +75,13 @@ class BlogFixtures extends Fixture
             $post->setTitle("Post {$i}");
             $post->setBody($this->lorem);
             $post->setUrl("post-{$i}");
-            $post->setRejected(FALSE);
+            $post->setRejected(false);
             $post->setCreatedAt(new \DateTime());
             // Assign a user as creator of the post
             // Odd for testUser1 / Even for textUser2
             $creator = $i % 2 !== 0 ? $testUser1 : $testUser2;
             $post->setUser($creator);
+            $post->setVisible(true);
             $manager->persist($post);
 
             // Addding a random comment to this post

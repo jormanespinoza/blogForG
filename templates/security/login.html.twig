@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}G Blog | Ingreso{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('login') }}
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row vh-100 d-flex align-items-center">
+            <div class="col-sm-6 col-10 offset-sm-3 offset-1 align-self-center">
+                <form method="post">
+                    {% if error %}
+                        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                    {% endif %}
+
+                    {% if app.user %}
+                        <div class="mb-3">
+                            You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+                        </div>
+                    {% endif %}
+
+                    <h1 class="mb-4 text-center">G Blog</h1>
+
+                    <input type="text" value="{{ last_username }}" name="username" id="inputUsername" placeholder="Usuario" class="form-control" required autofocus>
+
+                    <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Contraseña" class="form-control" required>
+
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                    <div class="checkbox mt-3 mb-3 text-left">
+                        <label>
+                            <input type="checkbox" name="_remember_me"> Recuérdame
+                        </label>
+                    </div>
+
+                    <div class="panel panel-default mb-3">
+                        <div class="panel-body text-center">
+                            ¿Nuevo en G Blog? |
+                            <a class="text-right" href="{{ path('register') }}">Regístrate</a>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary btn-lg btn-block" type="submit">
+                        Ingresar
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('login') }}
+{% endblock %}
