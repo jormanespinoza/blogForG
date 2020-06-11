@@ -1,0 +1,84 @@
+{% extends 'layout_back.html.twig' %}
+
+{% block title %}G Blog | Publicación: {{ post.id }}{% endblock %}
+
+{% block body %}
+    <div class="col-12">
+        <h1>Publicacion: {{ post.title }}</h1>
+    </div>
+
+    <div class="col-12">
+        {% if post.mainImage %}
+            <img class="img-fluid thumbnail" src="{{ asset('images/post/' ~ post.mainImage) }}" alt="Post main image">
+        {% else %}
+            <img class="img-fluid thumbnail" src="https://via.placeholder.com/1920x1080" alt="Post main image fallback">
+        {% endif %}
+    </div>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <td># {{ post.id }}  - <strong>{{ post.title }}</strong> por <em>{{ post.user.firstName ~ ' ' ~ post.user.lastName }}</em></td>
+            </tr>
+            <tr>
+                <td>{{ post.body|raw }}</td>
+            </tr>
+            <tr>
+                <th>Url</th>
+                <td>{{ post.url }}</td>
+            </tr>
+            <tr>
+                <th>Rechazado</th>
+                <td>{{ post.rejected ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Creado</th>
+                <td>{{ post.createdAt ? post.createdAt|ago: '' }}</td>
+            </tr>
+            <tr>
+                <th>Actualizado</th>
+                <td>{{ post.updatedAt ? post.updatedAt|ago : '' }}</td>
+            </tr>
+            <tr>
+                <th>Likes</th>
+                <td>{{ post.likes ? post.likes : 0 }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('dashboard') }}">Volver</a>
+
+    {% if not post.rejected and post.visible %}
+        <a class="" href="{{ path('post', {'url': post.url}) }}" target="_blank">Ver</a>
+    {% else %}
+        <a class="" href="{{ path('post_preview', {'url': post.url}) }}" target="_blank" rel="nofollow">Vista previa</a>
+    {% endif %}
+
+   <a class="" href="{{ path('post_show', {'id': post.id}) }}">Info</a>
+
+    {% if post.user.id == app.user.id %}
+        <a class="" href="{{ path('post_edit', {'id': post.id}) }}">Editar</a>
+
+        {{ include('blog_back/post/_delete_form.html.twig') }}
+    {% endif %}
+
+    {% if 'ROLE_ADMIN' in app.user.getRoles() == true %}
+        {% if not post.rejected %}
+            {{ include('blog_back/post/_reject_form.html.twig') }}
+        {% else %}
+            {{ include('blog_back/post/_unreject_form.html.twig') }}
+        {% endif %}
+    {% endif %}
+
+    <div class="col-12">
+        <h2>Comentarios</h2>
+
+        {% for coment in post.comments %}
+
+        {% else %}
+            <tr>
+                <td colspan="11">No hay comentarios</td>
+            </tr>
+        {% endfor %}
+    </div>
+{% endblock %}

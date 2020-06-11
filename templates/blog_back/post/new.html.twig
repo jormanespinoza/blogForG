@@ -1,0 +1,15 @@
+{% extends 'layout_back.html.twig' %}
+
+{% block title %}G Blog | Generar publicación{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('back') }}
+{% endblock %}
+
+{% block body %}
+    <h1>Generar nueva publicación</h1>
+
+    {{ include('blog_back/post/_form.html.twig') }}
+
+    <a href="{{ path('dashboard') }}">Volver</a>
+{% endblock %}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {% block seo %}{% endblock %}
+        <title>{% block title %}G Blog{% endblock %}</title>
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('back') }}
+        {% endblock %}
+    </head>
+
+    <body>
+        {% block header %}
+            {% if app.user %}
+            <div class="mb-3">
+                You are logged in as {{ app.user.firstName ~ ' ' ~ app.user.lastName }}
+                <a href="{{ path('dashboard') }}">Mi Cuenta</a>
+                <a href="{{ path('app_logout') }}">Logout</a>
+            </div>
+            {% else %}
+                <a href="{{ path('app_login') }}">Ingresar</a>
+                <a href="{{ path('register') }}">Registrame</a>
+            {% endif %}
+        {% endblock %}
+
+        <div class="container">
+            <div class="row">
+                {% block body %}{% endblock %}
+            </div>
+        </div>
+
+        {% block footer %}{% endblock %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('back') }}
+        {% endblock %}
+    </body>
+
+</html>

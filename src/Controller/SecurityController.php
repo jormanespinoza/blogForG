@@ -20,7 +20,6 @@ class SecurityController extends AbstractController
         UserPasswordEncoderInterface $passwordEncoder
     ) {
         $this->entityManager = $entityManagerInterface;
-        $this->entityManager = $entityManagerInterface;
         $this->authenticationUtils = $authenticationUtils;
         $this->request = $requestStack->getCurrentRequest();
         $this->userRepository = $this->entityManager->getRepository(User::class);
@@ -58,6 +57,10 @@ class SecurityController extends AbstractController
      * @Route("/registro", name="register")
      */
     public function register() {
+        if ($this->getUser()) {
+            return $this->redirectToRoute('blog');
+        }
+
         $user = new User();
         $form = $this->createForm(RegisterType::class, $user);
         $form->handleRequest($this->request);
@@ -83,7 +86,7 @@ class SecurityController extends AbstractController
 
                 $this->addFlash('success', 'Te regístraste con éxito!.');
 
-                return $this->redirectToRoute('login');
+                return $this->redirectToRoute('app_login');
             } elseif ($checkUsername !== null) {
                 $this->addFlash('error', 'Este nombre de usuario ya se encuentra en uso.');
             } else {

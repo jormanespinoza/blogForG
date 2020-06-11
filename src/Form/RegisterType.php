@@ -22,16 +22,23 @@ class RegisterType extends AbstractType
                 'label' => 'Nombre',
                 'required' => true,
                 'attr' => [
-                    'autofocus' => true
+                    'autofocus' => true,
+                    'class' => 'only-alphabetic-chars'
                 ]
             ])
             ->add('lastName', TextType::class, [
                 'label' => 'Apellido',
-                'required' => true
+                'required' => true,
+                'attr' => [
+                    'class' => 'only-alphabetic-chars'
+                ]
             ])
             ->add('username', TextType::class, [
                 'label' => 'Nombre de usuario',
-                'required' => true
+                'required' => true,
+                'attr' => [
+                    'class' => 'only-alphanumeric-chars'
+                ]
             ])
             ->add('email', TextType::class, [
                 'label' => 'Email',

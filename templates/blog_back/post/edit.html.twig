@@ -1,0 +1,9 @@
+{% extends 'layout_back.html.twig' %}
+
+{% block title %}G Blog | Editar publicación #{{ post.id }}{% endblock %}
+
+{% block body %}
+    <h1>Editar publicación</h1>
+
+    {{ include('blog_back/post/_form.html.twig', {'button_label': 'Actualizar'}) }}
+{% endblock %}

@@ -18,6 +18,10 @@
         "build": "encore production --progress"
     },
     "dependencies": {
-        "bootstrap": "^4.5.0"
+        "@ckeditor/ckeditor5-build-classic": "^19.0.2",
+        "bootstrap": "^4.5.0",
+        "ckeditor5": "^19.1.1",
+        "jquery-slugify": "^1.2.5",
+        "speakingurl": "^14.0.1"
     }
 }

@@ -1,8 +1,16 @@
 import '../css/global.scss';
-const $ = require('jquery');
-// this "modifies" the jquery module: adding behavior to it
-// the bootstrap module doesn't export/return anything
-require('bootstrap');
 
-import '../../public/bundles/prestaimage/css/cropper.css';
-import '../../public/bundles/prestaimage/js/cropper.js';
+const $ = require('jquery');
+
+const alphabeticPattern = '^[a-zA-Z\b]+$';
+
+const alphanumericPattern = '^[a-zA-Z0-9\b]+$';
+
+const disableCharsOnKeyup = (event, pattern) => {
+    const regex = new RegExp(pattern);
+    if (!regex.test(event.key)) return false;
+};
+
+$('.only-alphabetic-chars').on('keyup', (event) => disableCharsOnKeyup(event, alphabeticPattern));
+
+$('.only-alphanumeric-chars').on('keyup', (event) => disableCharsOnKeyup(event, alphanumericPattern));

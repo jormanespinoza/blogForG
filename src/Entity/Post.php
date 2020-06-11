@@ -36,25 +36,6 @@ class Post
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $coverImage;
-
-    /**
-     * @Assert\File(
-     *      mimeTypes = {"image/jpeg", "image/x-citrix-jpeg", "image/png", "image/x-png", "image/x-citrix-png"},
-     *      mimeTypesMessage = "Por favor, sube un formato válido (jpg/.png)",
-     *      maxSize = "2048k"
-     * )
-     * @Assert\Image(
-     *      minWidth = 767
-     * )
-     * @Vich\UploadableField(mapping="post", fileNameProperty="coverImage", size="coverImageSize")
-     * @var File
-     */
-    private $coverImageFile;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
     private $mainImage;
 
     /**
@@ -101,7 +82,7 @@ class Post
     private $user;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="post")
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="post", cascade={"persist", "remove"})
      */
     private $comments;
 
@@ -147,43 +128,6 @@ class Post
         $this->body = $body;
 
         return $this;
-    }
-
-    /**
-     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $coverImage
-     */
-    public function setCoverImageFile(?File $coverImage = null): void
-    {
-        $this->coverImageFile = $coverImage;
-
-        if (null !== $coverImage) {
-            $this->updateDate();
-        }
-    }
-
-    public function getCoverImageFile(): ?File
-    {
-        return $this->coverImageFile;
-    }
-
-    public function setCoverImage(?string $coverImage): void
-    {
-        $this->coverImage = $coverImage;
-    }
-
-    public function getCoverImage(): ?string
-    {
-        return $this->coverImage;
-    }
-
-    public function setCoverImageSize(?int $coverImageSize): void
-    {
-        $this->coverImageSize = $coverImageSize;
-    }
-
-    public function getCoverImageSize(): ?int
-    {
-        return $this->coverImageSize;
     }
 
     /**

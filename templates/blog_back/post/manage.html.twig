@@ -1,0 +1,78 @@
+{% extends 'layout_back.html.twig' %}
+
+{% block title %}G Blog - Gestionar publicaciones{% endblock %}
+
+{% block body %}
+    <h1>Gestionar publicaciones</h1>
+
+    <a class="" href="{{ path('dashboard') }}">Mis publicaciones</a>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Título</th>
+                <th>Imagen</th>
+                <th>Autor</th>
+                <th>Enlace</th>
+                <th>Rechazado</th>
+                <th>Creado</th>
+                <th>Actualizado</th>
+                <th>Comentarios</th>
+                <th>Likes</th>
+                <th>acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for post in posts %}
+            <tr>
+                <td>{{ post.id }}</td>
+                <td>{{ post.title }}</td>
+                <td>
+                    {% if post.mainImage %}
+                        <img class="post-main-image" src="{{ asset('images/post/' ~ post.mainImage) }}" alt="Post main image">{{ post.mainImage }}
+                    {% else %}
+                        <img class="post-main-image" src="{{ asset() }}" alt="Post main image fallback">{{ post.mainImage }}
+                    {% endif %}
+                </td>
+                 <td><em>{{ post.user.firstName ~ ' ' ~ post.user.lastName }}</em></td>
+                <td>{{ post.url }}</td>
+                <td>{{ post.rejected ? 'Sí' : 'No' }}</td>
+                <td>{{ post.createdAt ? post.createdAt|ago : '' }}</td>
+                <td>{{ post.updatedAt ? post.updatedAt|ago : '' }}</td>
+                <td>{{ post.comments|length }}</td>
+                <td>{{ post.likes ? post.likes : 0 }}</td>
+                <td>
+                    {% if not post.rejected and post.visible %}
+                        <a class="" href="{{ path('post', {'url': post.url}) }}" target="_blank">Ver</a>
+                    {% else %}
+                        <a class="" href="{{ path('post_preview', {'url': post.url}) }}" target="_blank" rel="nofollow">Vista previa</a>
+                    {% endif %}
+
+                   <a class="" href="{{ path('post_show', {'id': post.id}) }}">Info</a>
+
+                    {% if post.user.id == app.user.id %}
+                        <a class="" href="{{ path('post_edit', {'id': post.id}) }}">Editar</a>
+
+                        {{ include('blog_back/post/_delete_form.html.twig') }}
+                    {% endif %}
+
+                    {% if 'ROLE_ADMIN' in app.user.getRoles() == true %}
+                        {% if not post.rejected %}
+                            {{ include('blog_back/post/_reject_form.html.twig') }}
+                        {% else %}
+                            {{ include('blog_back/post/_unreject_form.html.twig') }}
+                        {% endif %}
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="11">No hay publicaciones de momento</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('post_new') }}">Nueva publicación</a>
+{% endblock %}

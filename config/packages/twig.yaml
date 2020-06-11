@@ -7,3 +7,5 @@ twig:
     form_themes:
         - 'bootstrap_4_layout.html.twig'
         - '@PrestaImage/form/bootstrap_4.html.twig'
+
+    # exception_controller: App\Controller\ExceptionController::showException

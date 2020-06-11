@@ -1,0 +1,17 @@
+/* Cropper */
+.cropper img {
+    width: 100%;
+    max-width: 100%;
+    display: block;
+}
+
+/* Post main image */
+.post-main-image {
+    max-width: 150px;
+}
+
+@media (max-width: 767px) {
+    img.post-main-image {
+        max-width: 100px;
+    }
+}
