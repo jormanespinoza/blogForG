@@ -36,7 +36,7 @@ class BlogFixtures extends Fixture
         $superUser->setFirstName('Glamit');
         $superUser->setLastName('Argentina');
         $superUser->setEmail('admin@glamit.com.ar');
-        $superUser->setRoles(['ROLE_SUPER_ADMIN']);
+        $superUser->setRoles(['ROLE_USER', 'ROLE_ADMIN', 'ROLE_SUPER_ADMIN']);
         $superUser->setCreatedAt(new \DateTime());
         $password = $this->encoder->encodePassword($superUser, 'glamit_admin_2020');
         $superUser->setPassword($password);
@@ -49,7 +49,7 @@ class BlogFixtures extends Fixture
         $adminUser->setFirstName('Admin');
         $adminUser->setLastName('User');
         $adminUser->setEmail('blog.admin@glamit.com.ar');
-        $adminUser->setRoles(['ROLE_ADMIN']);
+        $adminUser->setRoles(['ROLE_USER', 'ROLE_ADMIN']);
         $adminUser->setCreatedAt(new \DateTime());
         $password = $this->encoder->encodePassword($adminUser, 'admin_2020');
         $adminUser->setPassword($password);

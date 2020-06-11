@@ -52,6 +52,7 @@ class PostType extends AbstractType
             ])
             ->add('visible', CheckboxType::class, [
                 'label' => 'Visible',
+                'data' => true,
                 'required' => false
             ])
         ;

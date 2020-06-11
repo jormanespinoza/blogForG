@@ -7,9 +7,10 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Generar nueva publicación</h1>
+    <div class="col-12">
+        <h1 class="d-inline">Generar nueva publicación</h1> <a class="btn btn-sm btn-outline-dark float-right" href="{{ path('dashboard') }}">Volver</a>
+        <br><br>
 
-    {{ include('blog_back/post/_form.html.twig') }}
-
-    <a href="{{ path('dashboard') }}">Volver</a>
+        {{ include('blog_back/post/_form.html.twig') }}
+     </div>
 {% endblock %}

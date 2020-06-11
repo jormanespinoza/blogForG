@@ -3,17 +3,18 @@
 {% block title %}G Blog | Publicación: {{ post.id }}{% endblock %}
 
 {% block body %}
-    <div class="col-12">
-        <h1>Publicacion: {{ post.title }}</h1>
+    <div class="col-12 mb-3">
+        <h1 class="d-inline">Publicación: {{ post.title }}</h1> <a class="btn btn-sm btn-outline-dark float-right" href="{{ path('dashboard') }}">Volver</a>
     </div>
 
     <div class="col-12">
-        {% if post.mainImage %}
-            <img class="img-fluid img-thumbnail" src="{{ asset('images/post/' ~ post.mainImage) }}" alt="Post main image">
-        {% else %}
-            <img class="img-fluid img-thumbnail" src="https://via.placeholder.com/1920x1080" alt="Post main image fallback">
-        {% endif %}
-
+        <div class="mb-3">
+            {% if post.mainImage %}
+                <img class="img-fluid img-thumbnail" src="{{ asset('images/post/' ~ post.mainImage) }}" alt="Post main image">
+            {% else %}
+                <img class="img-fluid img-thumbnail" src="https://via.placeholder.com/1920x1080" alt="Post main image fallback">
+            {% endif %}
+        </div>
 
         <div class="table-responsive">
             <table class="table table-striped">
@@ -25,47 +26,48 @@
                         <td>{{ post.body|raw }}</td>
                     </tr>
                     <tr>
-                        <td>Url: {{ post.url }}</td>
+                        <td><b>Url:</b> {{ post.url }}</td>
                     </tr>
                     <tr>
-                        <td>Rechazado: {{ post.rejected ? 'Yes' : 'No' }}</td>
+                        <td><b>Rechazado:</b> {{ post.rejected ? 'Sí' : 'No' }}</td>
                     </tr>
                     <tr>
-                        <td>Creado: {{ post.createdAt ? post.createdAt|ago: '' }}</td>
+                        <td><b>Visible:</b> {{ post.visible ? 'Sí' : 'No' }}</td>
                     </tr>
                     <tr>
-                        <td>Actualizado: {{ post.updatedAt ? post.updatedAt|ago : '' }}</td>
+                        <td><b>Creado:</b> {{ post.createdAt ? post.createdAt|ago: '' }}</td>
                     </tr>
                     <tr>
-                        <td>Likes: {{ post.likes ? post.likes : 0 }}</td>
+                        <td><b>Actualizado:</b> {{ post.updatedAt ? post.updatedAt|ago : '' }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Likes:</b> {{ post.likes ? post.likes : 0 }}</td>
                     </tr>
                 </tbody>
             </table>
-         </div>
+        </div>
 
-        <a href="{{ path('dashboard') }}">Volver</a>
-
-        {% if not post.rejected and post.visible %}
-            <a class="" href="{{ path('post', {'url': post.url}) }}" target="_blank">Ver</a>
-        {% else %}
-            <a class="" href="{{ path('post_preview', {'url': post.url}) }}" target="_blank" rel="nofollow">Vista previa</a>
-        {% endif %}
-
-        <a class="" href="{{ path('post_show', {'id': post.id}) }}">Info</a>
-
-        {% if post.user.id == app.user.id %}
-            <a class="" href="{{ path('post_edit', {'id': post.id}) }}">Editar</a>
-
-            {{ include('blog_back/post/_delete_form.html.twig') }}
-        {% endif %}
-
-        {% if 'ROLE_ADMIN' in app.user.getRoles() == true %}
-            {% if not post.rejected %}
-                {{ include('blog_back/post/_reject_form.html.twig') }}
+        <div class="btn-group float-right">
+            {% if not post.rejected and post.visible %}
+                <a class="btn btn-sm btn-primary" href="{{ path('post', {'url': post.url}) }}" target="_blank">Ir a publicación</a>
             {% else %}
-                {{ include('blog_back/post/_unreject_form.html.twig') }}
+                <a class="btn btn-sm btn-primary" href="{{ path('post_preview', {'url': post.url}) }}" target="_blank" rel="nofollow">Ir a publicación (vista previa)</a>
             {% endif %}
-        {% endif %}
+
+            {% if post.user.id == app.user.id %}
+                <a class="btn btn-sm btn-secondary" href="{{ path('post_edit', {'id': post.id}) }}">Editar</a>
+
+                {{ include('blog_back/post/_delete_form.html.twig') }}
+            {% endif %}
+
+            {% if 'ROLE_ADMIN' in app.user.getRoles() == true %}
+                {% if not post.rejected %}
+                    {{ include('blog_back/post/_reject_form.html.twig') }}
+                {% else %}
+                    {{ include('blog_back/post/_unreject_form.html.twig') }}
+                {% endif %}
+            {% endif %}
+        </div>
     </div>
 
     <div class="col-12 mt-3">
@@ -86,8 +88,9 @@
             </div>
         {% else %}
             <tr>
-                <td colspan="11">No hay comentarios</td>
+                <td colspan="11"><blockquote>No hay comentarios</blockquote></td>
             </tr>
+
         {% endfor %}
     </div>
 {% endblock %}

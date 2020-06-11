@@ -44,5 +44,7 @@ security:
     access_control:
         - { path: ^/gestion, roles: ROLE_USER }
         - { path: ^/gestion/.*, roles: ROLE_USER }
+        - { path: ^/gestion/publicaciones/, roles: ROLE_ADMIN }
+        - { path: ^/gestion/perfiles/, roles: ROLE_SUPER_ADMIN }
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/registro, roles: IS_AUTHENTICATED_ANONYMOUSLY }

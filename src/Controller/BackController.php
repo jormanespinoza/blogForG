@@ -29,6 +29,14 @@ class BackController extends AbstractController
     }
 
     /**
+     * @Route("/", name="managemeent", methods={"GET"})
+     */
+    public function redirectDashboard()
+    {
+        return $this->redirectToRoute('dashboard');
+    }
+
+    /**
      * @Route("/mi-cuenta", name="dashboard", methods={"GET"})
      */
     public function index()

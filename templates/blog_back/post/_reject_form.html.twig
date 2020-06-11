@@ -1,4 +1,4 @@
 <form method="post" action="{{ path('post_reject', {'id': post.id}) }}" onsubmit="return confirm('¿Está seguro que desea rechazar esta publicación?');">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ post.id) }}">
-    <button class="btn">Rechazar</button>
+    <button class="btn btn-sm btn-warning">Rechazar</button>
 </form>
