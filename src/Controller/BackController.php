@@ -48,7 +48,8 @@ class BackController extends AbstractController
     {
         // Checks if the user is admin
         if (!in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
-            // TODO: send notification error 'This user is not allow to change another user\'s post'
+            $this->addFlash('danger', 'Acción no permitida');
+
             return $this->redirectToRoute('dashboard');
         }
 
@@ -73,6 +74,8 @@ class BackController extends AbstractController
             $entityManager->persist($post);
             $entityManager->flush();
 
+            $this->addFlash('success', 'Nueva publicación generada con éxito!');
+
             return $this->redirectToRoute('dashboard');
         }
 
@@ -90,12 +93,14 @@ class BackController extends AbstractController
         // Checks if the postId is in the database
         $checkedPost = $this->postRepository->findOneBy(['id' => $post]);
         if (!$checkedPost instanceof Post) {
-            // TODO: send notification error 'Post does not exist'
+            $this->addFlash('danger', 'No existen publicaciones con ese identificador');
+
             return $this->redirectToRoute('dashboard');
 
         } elseif (!($this->getUser()->getId() === $checkedPost->getUser()->getId())) {
             // Previous line checks if the current user is the actual owner of the post
-            // TODO: send notification error 'This user is not allow to change another user\'s post'
+            $this->addFlash('danger', 'Acción no permitida: solo el autor de la publicación puede editarla');
+
             return $this->redirectToRoute('dashboard');
         }
 
@@ -105,6 +110,8 @@ class BackController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $form->getData()->setUpdatedAt(new \DateTime);
             $this->getDoctrine()->getManager()->flush();
+
+            $this->addFlash('success', 'Publicación actualizada con éxito!');
 
             return $this->redirectToRoute('dashboard');
         }
@@ -134,6 +141,8 @@ class BackController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($post);
             $entityManager->flush();
+
+            $this->addFlash('success', 'Publicación eliminada con éxito!');
         }
 
         return $this->redirectToRoute('dashboard');
@@ -150,13 +159,15 @@ class BackController extends AbstractController
             $post->setRejected(true);
             $entityManager->persist($post);
             $entityManager->flush();
+
+            $this->addFlash('success', 'Publicación rechazada');
         }
 
         return $this->redirectToRoute('post_manage');
     }
 
     /**
-     * @Route("/aprobar-publicacion/{id}", name="post_unreject", methods={"POST"})
+     * @Route("/aceptar-publicacion/{id}", name="post_unreject", methods={"POST"})
      */
     public function unreject(Post $post)
     {
@@ -166,6 +177,8 @@ class BackController extends AbstractController
             $post->setRejected(false);
             $entityManager->persist($post);
             $entityManager->flush();
+
+            $this->addFlash('success', 'Publicación aceptada');
         }
 
         return $this->redirectToRoute('post_manage');
