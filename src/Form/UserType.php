@@ -7,8 +7,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Presta\ImageBundle\Form\Type\ImageType;
 
 class UserType extends AbstractType
@@ -34,18 +32,14 @@ class UserType extends AbstractType
                 'label' => 'Email',
                 'required' => true
             ])
-            ->add('password', RepeatedType::class, array(
-                'type' => PasswordType::class,
-                'invalid_message' => 'Asegurate de que la contraseña coincida.',
-                'first_options'  => ['label' => 'Contraseña'],
-                'second_options' => ['label' => 'Repetir contraseña']
-            ))
             ->add('profileImageFile', ImageType::class, [
                 'label' => 'Imagen de Perfil',
-                'help' => 'Dimensiones: min. 250x250px / Formatos: .jpg, .png, .jpeg / Max. 2048kB',
+                'help' => 'Dimensiones: min. 500x500px / Formatos: .jpg, .png, .jpeg / Max. 2048kB',
                 'required' => false,
-                'upload_button_class' => 'btn btn-default js-btn-cropper',
+                'upload_button_class' => 'btn btn-sm btn-dark',
                 'preview_height' => 'auto',
+                'max_width' => 500,
+                'max_height' => 500,
                 'enable_remote' => false,
                 'upload_mimetype' => 'image/jpeg',
                 'aspect_ratios' => [] // Needs to be empty

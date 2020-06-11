@@ -33,7 +33,8 @@
                                     {{ app.user.firstName ~ ' ' ~ app.user.lastName }}
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="dropdown01">
-                                <a class="dropdown-item" href="#">Mi perfil</a>
+                                <a class="dropdown-item" href="{{ path('profile', {'id': app.user.getId() }) }}">Mi perfil</a>
+                                <a class="dropdown-item" href="{{ path('app_logout') }}">Cerrar sesión</a>
                                 </div>
                             </li>
                         </ul>

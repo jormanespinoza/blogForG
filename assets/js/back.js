@@ -57,4 +57,7 @@ $(() => {
     $('.applyCKEditor').each((index, element) => {
         generateCKEditor(`#${$(element).attr('id')}`);
     });
+
+    // Collaspe
+    $('.collapse').collapse();
 });
