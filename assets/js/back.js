@@ -1,23 +1,15 @@
 import '../css/global.scss';
-
 import '../css/back.css';
 
 const $ = require('jquery');
-
 const getSlug = require('speakingurl');
 
 import 'bootstrap';
-
 import '../css/vendor/cropper.min.css';
-
 import '../../public/bundles/prestaimage/css/cropper.css';
-
 import './vendor/cropper.min.js';
-
 import Cropper from '../../public/bundles/prestaimage/js/cropper.js';
-
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-
 import '@ckeditor/ckeditor5-build-classic/build/translations/es.js';
 
 const generateCKEditor = (textarea) => {

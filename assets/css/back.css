@@ -10,6 +10,10 @@
     max-width: 150px;
 }
 
+.comment-user-image {
+    max-width: 70px;
+}
+
 @media (max-width: 767px) {
     img.post-main-image {
         max-width: 100px;

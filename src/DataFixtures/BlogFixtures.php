@@ -30,15 +30,28 @@ class BlogFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
+        // Super Admin
+        $superUser = new User();
+        $superUser->setUsername('glamit');
+        $superUser->setFirstName('Glamit');
+        $superUser->setLastName('Argentina');
+        $superUser->setEmail('admin@glamit.com.ar');
+        $superUser->setRoles(['ROLE_SUPER_ADMIN']);
+        $superUser->setCreatedAt(new \DateTime());
+        $password = $this->encoder->encodePassword($superUser, 'glamit_admin_2020');
+        $superUser->setPassword($password);
+        $superUser->setIsActive(true);
+        $manager->persist($superUser);
+
         // Admin
         $adminUser = new User();
-        $adminUser->setUsername('glamit');
-        $adminUser->setFirstName('Glamit');
-        $adminUser->setLastName('Argentina');
+        $adminUser->setUsername('admin');
+        $adminUser->setFirstName('Admin');
+        $adminUser->setLastName('User');
         $adminUser->setEmail('blog.admin@glamit.com.ar');
-        $adminUser->setRoles(['ROLE_USER', 'ROLE_ADMIN']);
+        $adminUser->setRoles(['ROLE_ADMIN']);
         $adminUser->setCreatedAt(new \DateTime());
-        $password = $this->encoder->encodePassword($adminUser, 'glamit_admin_2020');
+        $password = $this->encoder->encodePassword($adminUser, 'admin_2020');
         $adminUser->setPassword($password);
         $adminUser->setIsActive(true);
         $manager->persist($adminUser);
