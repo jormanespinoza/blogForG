@@ -4,8 +4,9 @@ import '../css/app.css';
 const $ = require('jquery');
 
 import 'bootstrap';
-
 import './vendor/jquery.validate.js';
+
+import 'font-awesome/css/font-awesome.min.css';
 
 const countComments = (postId) => {
     $.ajax({
@@ -17,7 +18,6 @@ const countComments = (postId) => {
         }
     });
 };
-
 const initCommentFrm = () => {
     if ($('#comment-frm')[0]) {
         $('#comment-frm').validate({
@@ -30,6 +30,7 @@ const initCommentFrm = () => {
             errorPlacement: (error, element) => {},
             success: (label, element) => {},
             submitHandler: () => {
+                $('#comment-frm button').text('Enviando...').addClass('disabled');
                 $.ajax({
                     url: '/add-new-comment',
                     type: 'POST',
@@ -39,13 +40,38 @@ const initCommentFrm = () => {
                         $('#comment').val('');
                         // Update comments
                         $('#post-comments').html(response);
-                        // Update amount indicator
+                        // Update comment amount indicator
                         countComments($('#post').val());
+                        $('#comment-frm button').text('Enviar').removeClass('disabled');
                     }
                 });
             }
         });
     }
 };
+const likedPost = (element, post, liked) => {
+    element.addClass('disabled');
+
+    $.ajax({
+        url: '/like-post',
+        type: 'POST',
+        data: `post=${post}&liked=${liked}`,
+        success: (response) => {
+            $('.post-likes-count').text(response);
+            element.data('liked', liked);
+            element.toggleClass('text-danger');
+            element.siblings('.fa-heart').toggleClass('fa-heart-o text-danger');
+            element.removeClass('disabled');
+        }
+    });
+};
 
 $(window).on('load', () => initCommentFrm());
+
+$(() => {
+    $('.toggle-like').on('click', function () {
+        const liked = !$(this).data('liked');
+
+        likedPost($(this), $(this).data('post'), liked);
+    });
+});

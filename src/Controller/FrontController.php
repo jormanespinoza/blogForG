@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Post;
 use App\Entity\Comment;
+use App\Entity\Like;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -19,6 +20,7 @@ class FrontController extends AbstractController
         $this->entityManager = $entityManagerInterface;
         $this->request = $requestStack->getCurrentRequest();
         $this->postRepository = $this->entityManager->getRepository(Post::class);
+        $this->likeRepository = $this->entityManager->getRepository(Like::class);
         $this->timezone = 'America/Argentina/Buenos_Aires';
         date_default_timezone_set($this->timezone);
     }
@@ -61,9 +63,13 @@ class FrontController extends AbstractController
         array_unshift($keywords, 'g', 'blog');
         $keywords = implode(',', $keywords);
 
+        $likeByUser = $this->likeRepository->findOneBy(['user' => $this->getUser(), 'post' => $post, 'liked' => true]);
+
         return $this->render('blog_front/post.html.twig', [
             'post' => $post,
-            'keywords' =>$keywords
+            'keywords' =>$keywords,
+            'likes' => count($this->likeRepository->findBy(['post' => $post, 'liked' => true])),
+            'likedByUser' => $likeByUser instanceof Like
         ]);
     }
 
@@ -131,6 +137,36 @@ class FrontController extends AbstractController
         $post = $this->postRepository->findOneBy(['id' => $this->request->request->get('post')]);
 
         return new Response(count($post->getComments()));
+    }
+
+    /**
+     * @Route("/like-post", name="like_post", methods={"POST"})
+     */
+    public function likePost()
+    {
+        // Get parameters
+        $post = $this->postRepository->findOneBy(['id' => $this->request->request->get('post')]);
+        $liked = $this->request->request->get('liked') === 'true' ? true : false;
+
+        $like = $this->likeRepository->findOneBy(['user' => $this->getUser(), 'post' => $post]);
+
+        if ($like instanceof Like) {
+            $like->setLiked($liked);
+            $like->setUpdatedAt(new \DateTime());
+        } else {
+            $like = new Like();
+            $like->setUser($this->getUser());
+            $like->setPost($post);
+            $like->setLiked($liked);
+            $like->setCreatedAt(new \DateTime());
+        }
+
+        $this->entityManager->persist($like);
+        $this->entityManager->flush();
+
+        $postTotalLikes = count($this->likeRepository->findBy(['post' => $post, 'liked' => true]));
+
+        return new Response($postTotalLikes);
     }
 }
 

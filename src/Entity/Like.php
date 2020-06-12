@@ -24,18 +24,17 @@ class Like
     private $liked;
 
     /**
-     * @ORM\OneToOne(targetEntity=User::class, cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $user;
+    * @ORM\OneToOne(targetEntity=User::class, cascade={"persist", "remove"})
+    * @ORM\JoinColumn(nullable=false)
+    */
+   private $user;
 
+   /**
+    * @ORM\OneToOne(targetEntity=Post::class, cascade={"persist", "remove"})
+    * @ORM\JoinColumn(nullable=false)
+    */
+   private $post;
     /**
-     * @ORM\OneToOne(targetEntity=Post::class, cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $post;
-
-     /**
      * @ORM\Column(type="datetime")
      *
      * @var \DateTime
@@ -86,6 +85,30 @@ class Like
     public function setPost(Post $post): self
     {
         $this->post = $post;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

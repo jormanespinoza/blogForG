@@ -88,11 +88,6 @@ class Post
     private $comments;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $likes;
-
-    /**
      * @ORM\Column(type="boolean")
      */
     private $visible;
@@ -236,18 +231,6 @@ class Post
     public function setUser(?User $user): self
     {
         $this->user = $user;
-
-        return $this;
-    }
-
-    public function getLikes(): ?int
-    {
-        return $this->likes;
-    }
-
-    public function setLikes(?int $likes): self
-    {
-        $this->likes = $likes;
 
         return $this;
     }
