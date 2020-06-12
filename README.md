@@ -17,22 +17,22 @@ Boostrap 4
 
 Composer
 --
-WebserverBundle
-VichUploaderBundle
-PrestaImageBundle
-DoctrineFixturesBundles
-Symfony/Translation
-Webpace Encore
-composer require knplabs/knp-time-bundle
+* WebserverBundle (correr servidor local)
+* VichUploaderBundle (carga de archivos)
+* PrestaImageBundle (crop de imágenes)
+* DoctrineFixturesBundles (carga de contenido )
+* Symfony/Translation (traducir mensajes de error a español)
+* Webpace Encore (compilar assets)
+* Knplabs/knp-time-bundle (manejo de fechas)
 
 Npm
 --
-CKEditor5
-Cropper.js
-speakingurl.js
-copy-webpack-plugin
-node-sass
-sass-loader
+* CKEditor5
+* Cropper.js
+* speakingurl.js
+* copy-webpack-plugin
+* node-sass
+* sass-loader
 
 # Instalación
 * Clonar repositorio de Github git clone https://github.com/jormanespinoza/blogForG.git
@@ -52,3 +52,21 @@ sass-loader
 * Una vez compilados los assets mediante el WebServerBundle (php bin/console server:start) se habilitará un servidor local en el puerto 8000 (http://localhost:8000/)
 * Esto ya levantará el blog en modo desarrollo para recorrer las vistas
 * Para pasar la web a modo producción bastará con ubicar nuevamente el archivo .env y cambiar APP_ENV=dev por APP_ENV=prod (sería conveniente compilar nuevamente los assets php bin/console assets:install)
+* Priceso completa
+
+# Algunas vistas
+
+* Login
+![alt text](https://raw.githubusercontent.com/jormanespinoza/blogForG/master/assets/images/login.png)
+
+* Header
+![alt text](https://raw.githubusercontent.com/jormanespinoza/blogForG/master/assets/images/header.png)
+
+* Posts
+![alt text](https://raw.githubusercontent.com/jormanespinoza/blogForG/master/assets/images/posts.png)
+
+* Comments
+![alt text](https://github.com/jormanespinoza/blogForG/blob/master/assets/images/comments.png)
+
+* Management
+![alt text](https://github.com/jormanespinoza/blogForG/blob/master/assets/images/manage_posts.png)
