@@ -31,7 +31,10 @@ class UserType extends AbstractType
             ])
             ->add('username', TextType::class, [
                 'label' => 'Nombre de usuario',
-                'required' => true
+                'required' => true,
+                'attr' => [
+                    'class' => 'only-alphanumeric-chars'
+                ]
             ])
             ->add('email', TextType::class, [
                 'label' => 'Email',

@@ -7,6 +7,10 @@
 
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav ml-auto">
+                 <li class="nav-item">
+                    <a class="nav-link text-info" href="{{ path('post_new') }}">Nueva publicación</a>
+                </li>
+
                 <li class="nav-item{{ currentRoute == 'dashboard' ? ' active' : '' }}">
                     <a class="nav-link" href="{{ path('dashboard') }}">Mis publicaciones</a>
                 </li>

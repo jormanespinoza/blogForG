@@ -9,6 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Presta\ImageBundle\Form\Type\ImageType;
 
 class PostType extends AbstractType
@@ -29,7 +30,7 @@ class PostType extends AbstractType
             ])
             ->add('body', TextareaType::class, [
                 'label' => 'Contenido',
-                'required' => true,
+                'required' => false,
                 'empty_data' => '',
                 'attr' => [
                     'class' => 'applyCKEditor'
@@ -54,6 +55,9 @@ class PostType extends AbstractType
                 'label' => 'Visible',
                 'data' => true,
                 'required' => false
+            ])
+            ->add('rejected', HiddenType::class, [
+                'data' => false
             ])
         ;
     }

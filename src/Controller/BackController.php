@@ -91,7 +91,7 @@ class BackController extends AbstractController
 
         return $this->render('blog_back/post/new.html.twig', [
             'post' => $post,
-            'form' => $form->createView(),
+            'form' => $form->createView()
         ]);
     }
 

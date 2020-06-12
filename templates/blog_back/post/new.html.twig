@@ -2,15 +2,11 @@
 
 {% block title %}G Blog | Generar publicación{% endblock %}
 
-{% block stylesheets %}
-    {{ encore_entry_link_tags('back') }}
-{% endblock %}
-
 {% block body %}
     <div class="col-12">
         <h1 class="d-inline">Generar nueva publicación</h1> <a class="btn btn-sm btn-outline-dark float-right" href="{{ path('dashboard') }}">Volver</a>
         <br><br>
 
-        {{ include('blog_back/post/_form.html.twig') }}
+        {{ include('blog_back/post/_form.html.twig', {'button_label': 'Agregar', 'button_class': 'success'}) }}
      </div>
 {% endblock %}
