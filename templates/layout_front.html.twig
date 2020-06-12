@@ -13,19 +13,20 @@
 
     <body>
         {% block header %}
-
-                <a href="{{ path('dashboard') }}">Mi Cuenta</a>
-                <a href="{{ path('app_logout') }}">Logout</a>
-
-
-                <a href="{{ path('app_login') }}">Ingresar</a>
-                <a href="{{ path('register') }}">Registrame</a>
-
+            {{ render(controller('App\\Controller\\SecurityController::getUserData', {'route': app.request.attributes.get('_route'), 'mode': 'front'} )) }}
         {% endblock %}
 
-        {% block body %}{% endblock %}
+        <main class="container container--front">
+            {% block body %}{% endblock %}
+        </main>
 
-        {% block footer %}{% endblock %}
+        {% block footer %}
+            <footer class="footer mt-auto py-3 bg-dark">
+                <div class="container">
+                    <span class="text-muted">Desarrollado por: <a class="copyrights text-muted" href="https://jormanespinoza.com">Jorman Espinoza</a></span>
+                </div>
+            </footer>
+        {% endblock %}
 
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}

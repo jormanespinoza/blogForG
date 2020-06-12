@@ -70,7 +70,7 @@ class BlogFixtures extends Fixture
         $testUser1->setUsername('user1');
         $testUser1->setFirstName('First');
         $testUser1->setLastName('User');
-        $testUser1->setEmail('firstuser@glamit.com.ar');
+        $testUser1->setEmail('user@glamit.com.ar');
         $testUser1->setRoles(['ROLE_USER']);
         $testUser1->setCreatedAt(new \DateTime());
         $password = $this->encoder->encodePassword($testUser1, '123456');
@@ -87,7 +87,7 @@ class BlogFixtures extends Fixture
         $testUser2->setUsername('user2');
         $testUser2->setFirstName('Second');
         $testUser2->setLastName('User');
-        $testUser2->setEmail('seconduser@glamit.com.ar');
+        $testUser2->setEmail('secondaryuser@glamit.com.ar');
         $testUser2->setRoles(['ROLE_USER']);
         $testUser2->setCreatedAt(new \DateTime());
         $password = $this->encoder->encodePassword($testUser2, '123456');

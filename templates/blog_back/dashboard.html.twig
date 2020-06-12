@@ -51,12 +51,12 @@
                        <td colspan="11">
                             <div class="btn-group float-right">
                                 {% if not post.rejected and post.visible %}
-                                    <a class="btn btn-sm btn-primary" href="{{ path('post', {'url': post.url}) }}" target="_blank">Ir a publicación</a>
+                                    <a class="btn btn-sm btn-info" href="{{ path('post', {'url': post.url}) }}" target="_blank">Ir a publicación</a>
                                 {% else %}
-                                    <a class="btn btn-sm btn-primary" href="{{ path('post_preview', {'url': post.url}) }}" target="_blank" rel="nofollow">Ir a publicación (vista previa)</a>
+                                    <a class="btn btn-sm btn-info" href="{{ path('post_preview', {'url': post.url}) }}" target="_blank" rel="nofollow">Ir a publicación (vista previa)</a>
                                 {% endif %}
 
-                                <a class="btn btn-sm btn-info" href="{{ path('post_show', {'id': post.id}) }}">Ver</a>
+                                <a class="btn btn-sm btn-outline-info" href="{{ path('post_show', {'id': post.id}) }}">Más información</a>
 
                                 {% if post.user.id == app.user.id %}
                                     <a class="btn btn-sm btn-secondary" href="{{ path('post_edit', {'id': post.id}) }}">Editar</a>
@@ -82,7 +82,7 @@
                 </tbody>
             </table>
 
-            <a class="btn btn-md btn-primary" href="{{ path('post_new') }}">Nueva publicación</a>
+            <a class="btn btn-md btn-info" href="{{ path('post_new') }}">Nueva publicación</a>
         </div>
     </div>
 {% endblock %}

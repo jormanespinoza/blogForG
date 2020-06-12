@@ -83,6 +83,7 @@ class Post
 
     /**
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="post", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"id" = "DESC"})
      */
     private $comments;
 

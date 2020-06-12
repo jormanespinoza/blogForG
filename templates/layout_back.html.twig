@@ -13,7 +13,7 @@
 
     <body>
         {% block header %}
-            {{ render(controller('App\\Controller\\SecurityController::getUserData', {'user': app.user.id, 'route': app.request.attributes.get('_route')} )) }}
+            {{ render(controller('App\\Controller\\SecurityController::getUserData', {'route': app.request.attributes.get('_route'), 'mode': 'back'} )) }}
         {% endblock %}
 
         <div class="container container--back">
@@ -39,7 +39,7 @@
         {% block footer %}
             <footer class="footer mt-auto py-3 bg-dark">
                 <div class="container">
-                    <span class="text-muted">Desarrado por: <a class="copyrights text-muted" href="https://jormanespinoza.com">Jorman Espinoza</a></span>
+                    <span class="text-muted">Desarrollado por: <a class="copyrights text-muted" href="https://jormanespinoza.com">Jorman Espinoza</a></span>
                 </div>
             </footer>
         {% endblock %}

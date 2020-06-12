@@ -13,7 +13,6 @@ const disableCharsOnKeypress = (event, pattern) => {
 import 'bootstrap';
 import '../css/vendor/cropper.min.css';
 import '../../public/bundles/prestaimage/css/cropper.css';
-import './utils/user_form.js';
 import './vendor/cropper.min.js';
 import Cropper from '../../public/bundles/prestaimage/js/cropper.js';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -68,7 +67,4 @@ $(() => {
     $('.applyCKEditor').each((index, element) => {
         generateCKEditor(`#${$(element).attr('id')}`);
     });
-
-    // Collaspe
-    $('.collapse').collapse();
 });

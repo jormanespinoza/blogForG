@@ -5,10 +5,32 @@
     <meta name="keywords" content="g,blog">
 {% endblock %}
 
-{% block stylesheets %}
-    {{ encore_entry_link_tags('app') }}
-{% endblock %}
+{% block body %}
+    <div class="col-12">
+        <div class="jumbotron bg-light">
+            <h1 class="display-4">G Blog</h1>
+            <p class="lead">Este es un blog de prueba | <small class="badge badge-secondary">Basando en Symfony 4</small></p>
+            <hr class="my-4">
+            <p>Combinando jQuery, Boostrap 4 e integrando Webpack Encore para el manejo de assets y demás librerías.</p>
+            <a class="btn btn-info btn-lg" href="https://github.com/jormanespinoza/blogForG" role="button" target="blank">Repositorio de Github</a>
+        </div>
 
-{% block javascripts %}
-    {{ encore_entry_script_tags('app') }}
+        <hr class="my-4">
+
+        <div class="row posts">
+            {% for post in posts %}
+                <div class="col-sm-6">
+                    <a href="{{ path('post', {'url': post.url}) }}">
+                        {{ post.title|capitalize }}
+                    </a>
+                    <svg class="bi bi-heart" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                    </svg>
+                    <svg class="bi bi-heart-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+                    </svg>
+                </div>
+            {% endfor %}
+        </div>
+     </div>
 {% endblock %}

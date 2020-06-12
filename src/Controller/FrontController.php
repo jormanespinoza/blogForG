@@ -3,15 +3,21 @@
 namespace App\Controller;
 
 use App\Entity\Post;
+use App\Entity\Comment;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\EntityManagerInterface;
 
 class FrontController extends AbstractController
 {
-    public function __construct(EntityManagerInterface $entityManagerInterface)
-    {
+    public function __construct(
+        EntityManagerInterface $entityManagerInterface,
+        RequestStack $requestStack
+    ) {
         $this->entityManager = $entityManagerInterface;
+        $this->request = $requestStack->getCurrentRequest();
         $this->postRepository = $this->entityManager->getRepository(Post::class);
         $this->timezone = 'America/Argentina/Buenos_Aires';
         date_default_timezone_set($this->timezone);
@@ -22,12 +28,17 @@ class FrontController extends AbstractController
     public function blog()
     {
         return $this->render('blog_front/blog.html.twig', [
-            'posts' => $this->postRepository->findAll(),
+            'posts' => $this->postRepository->findBy([
+                'rejected' => false, 'visible' => true
+            ],
+            [
+                'id' => 'DESC'
+            ])
         ]);
     }
 
     /**
-     * @Route("/blog/{url}", name="post", methods={"GET"})
+     * @Route("/articulo/{url}", name="post", methods={"GET"})
      */
     public function post($url)
     {
@@ -80,6 +91,46 @@ class FrontController extends AbstractController
             'post' => $post,
             'keywords' =>$keywords
         ]);
+    }
+
+    public function getPostComments(Post $post)
+    {
+        return $this->render("blog_front/includes/comments.html.twig", [
+            'post' =>  $post
+        ]);
+    }
+
+    /**
+     * @Route("/add-new-comment", name="add_new_comment", methods={"POST"})
+     */
+    public function addNewComment()
+    {
+        // Get parameters
+        $post = $this->postRepository->findOneBy(['id' => $this->request->request->get('post')]);
+        $message = filter_var ($this->request->request->get('comment'), FILTER_SANITIZE_STRING);
+
+        $comment = new Comment();
+        $comment->setUser($this->getUser());
+        $comment->setPost($post);
+        $comment->setMessage($message);
+        $comment->setCreatedAt(new \DateTime());
+        $this->entityManager->persist($comment);
+        $this->entityManager->flush();
+
+        return $this->render("blog_front/includes/comments.html.twig", [
+            'post' =>  $post
+        ]);
+    }
+
+    /**
+     * @Route("/count-comments", name="count_comment", methods={"POST"})
+     */
+    public function countComments()
+    {
+        // Get parameter
+        $post = $this->postRepository->findOneBy(['id' => $this->request->request->get('post')]);
+
+        return new Response(count($post->getComments()));
     }
 }
 

@@ -1,3 +1,22 @@
 body {
     background-color: lightgray;
 }
+
+.container--front {
+    padding-top: 80px;
+    padding-bottom: 80px;
+    min-height: calc(100vh - 56px);
+}
+
+.user-profile-image {
+    height: 25px;
+    margin-right: 5px;
+}
+
+.comment-user-image {
+    max-width: 70px;
+}
+
+.form-control.error {
+    border-color: #ff0000;
+}

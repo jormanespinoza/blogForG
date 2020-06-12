@@ -21,18 +21,19 @@
                         <a class="dropdown-item{{
                             currentRoute == 'profile' or
                             currentRoute == 'profile_edit' or
-                            currentRoute == 'profile_edir_password' or
-                            currentRoute == 'profile_edir_image' ? ' active' : '' }}" href="{{ path('profile', {'id': loggedUser.getId() }) }}">Mi perfil</a>
+                            currentRoute == 'profile_edit_password' or
+                            currentRoute == 'profile_edit_image' ? ' active' : '' }}" href="{{ path('profile', {'id': loggedUser.getId() }) }}">Mi perfil</a>
                         <a class="dropdown-item" href="{{ path('app_logout') }}">Cerrar sesión</a>
                     </div>
                 </li>
             </ul>
 
             {% if 'ROLE_ADMIN' in loggedUser.getRoles() == true %}
-                <a class="btn btn.sm btn-outline-{{ currentRoute == 'post_manage' ? 'light' : 'secondary' }} float-right" href="{{ path('post_manage') }}">Gestionar publicaciones</a>
+                <a class="btn btn-sm btn-outline-{{ currentRoute == 'post_manage' ? 'info' : 'secondary' }} float-right" href="{{ path('post_manage') }}">Gestionar publicaciones</a>
             {% endif %}
             {% if 'ROLE_SUPER_ADMIN' in loggedUser.getRoles() == true %}
-                <a class="btn btn.sm btn-outline-{{ currentRoute == 'post_manage' ? 'light' : 'secondary' }} float-right" href="{{ path('profiles_manage') }}">Gestionar perfiles</a>
+                <a class="btn btn-sm btn-outline-{{ currentRoute == 'profiles_manage' or currentRoute == 'edit_permission' ? 'info' : 'secondary' }} float-right"
+                    href="{{ path('profiles_manage') }}">Gestionar perfiles</a>
             {% endif %}
         </div>
     </nav>

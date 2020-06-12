@@ -100,11 +100,11 @@ class SecurityController extends AbstractController
     }
 
     /* User Data */
-    public function getUserData($user, $route)
+    public function getUserData($route, $mode)
     {
-        $user = $this->userRepository->findOneBy(['id' => $user]);
+        $user = $this->getUser() ? $this->userRepository->findOneBy(['id' => $this->getUser()->getId()]) : null;
 
-        return $this->render('blog_back/includes/header.html.twig', [
+        return $this->render("blog_{$mode}/includes/header.html.twig", [
             'loggedUser' =>  $user,
             'currentRoute' => $route
         ]);

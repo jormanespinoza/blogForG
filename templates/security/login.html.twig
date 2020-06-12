@@ -13,15 +13,15 @@
         <div class="row vh-100 d-flex align-items-center">
             <div class="col-sm-6 col-10 offset-sm-3 offset-1 align-self-center">
                 <form method="post">
-                    <h1 class="mb-4 text-center">G Blog</h1>
+                     <a href="{{ path('blog') }}"><h1 class="mb-4 text-center text-white">G Blog</h1></a>
 
-                    <input type="text" value="{{ last_username }}" name="username" id="inputUsername" placeholder="Usuario" class="form-control" required autofocus>
+                    <input type="text" value="{{ last_username }}" name="username" id="inputUsername" placeholder="Usuario" class="form-control mb-3" required autofocus>
 
                     <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Contraseña" class="form-control" required>
 
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-                    <div class="checkbox mt-3 mb-3 text-left">
+                    <div class="checkbox mt-3 mb-3 text-left text-secondary">
                         <label>
                             <input type="checkbox" name="_remember_me"> Recuérdame
                         </label>
@@ -32,13 +32,13 @@
                     {% endif %}
 
                     <div class="panel panel-default mb-3">
-                        <div class="panel-body text-center">
+                        <div class="panel-body text-center text-info">
                             ¿Nuevo en G Blog? |
-                            <a class="text-right" href="{{ path('register') }}">Regístrate</a>
+                            <a class="text-right text-muted" href="{{ path('register') }}">Regístrate</a>
                         </div>
                     </div>
 
-                    <button class="btn btn-primary btn-lg btn-block" type="submit">
+                    <button class="btn btn-secondary btn-lg btn-block" type="submit">
                         Ingresar
                     </button>
                 </form>

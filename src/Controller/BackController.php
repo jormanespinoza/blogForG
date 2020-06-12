@@ -69,7 +69,7 @@ class BackController extends AbstractController
     }
 
      /**
-     * @Route("/generar-publicacion", name="post_new", methods={"GET","POST"})
+     * @Route("/nueva-publicacion", name="post_new", methods={"GET","POST"})
      */
     public function new()
     {

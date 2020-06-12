@@ -74,9 +74,9 @@
         <h2 class="mb-3">Comentarios <span class="badge badge-dark"><small>{{ post.comments|length }}</small></span></h2>
 
         {% for comment in post.comments %}
-            <div class="media">
-                {% if comment.user.profileImage %}
-                    <img class="comment-user-image rounded-circle mr-3" src="{{ asset('images/user' ~ comment.user.profileImage) }}" class="mr-3" alt="G Blog | User {{ comment.user.firstName ~ ' ' ~ comment.user.lastName }}">
+            <div class="media mb-3">
+                {% if comment.user.profile.profileImage %}
+                    <img class="comment-user-image rounded-circle mr-3" src="{{ asset('images/user/' ~ comment.user.profile.profileImage) }}" class="mr-3" alt="G Blog | User {{ comment.user.firstName ~ ' ' ~ comment.user.lastName }}">
                 {% else %}
                     <img class="comment-user-image rounded-circle mr-3" src="{{ asset('build/images/user.png') }}" alt="Post main image fallback">
                 {% endif %}

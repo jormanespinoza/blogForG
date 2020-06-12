@@ -1,2 +1,10 @@
 // the ~ allows you to reference things in node_modules
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+
+// Custom variables here
+$dropdown-bg:                       $dark;
+$dropdown-link-color:               $light;
+$dropdown-link-active-bg:           $info;
+
 @import '~bootstrap/scss/bootstrap';
