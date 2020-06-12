@@ -24,17 +24,6 @@ class Like
     private $liked;
 
     /**
-    * @ORM\OneToOne(targetEntity=User::class, cascade={"persist", "remove"})
-    * @ORM\JoinColumn(nullable=false)
-    */
-   private $user;
-
-   /**
-    * @ORM\OneToOne(targetEntity=Post::class, cascade={"persist", "remove"})
-    * @ORM\JoinColumn(nullable=false)
-    */
-   private $post;
-    /**
      * @ORM\Column(type="datetime")
      *
      * @var \DateTime
@@ -47,6 +36,16 @@ class Like
      * @var \DateTime
      */
     private $updatedAt;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $userId;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $postId;
 
     public function getId(): ?int
     {
@@ -77,18 +76,6 @@ class Like
         return $this;
     }
 
-    public function getPost(): ?Post
-    {
-        return $this->post;
-    }
-
-    public function setPost(Post $post): self
-    {
-        $this->post = $post;
-
-        return $this;
-    }
-
     public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
@@ -109,6 +96,30 @@ class Like
     public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getUserId(): ?int
+    {
+        return $this->userId;
+    }
+
+    public function setUserId(int $userId): self
+    {
+        $this->userId = $userId;
+
+        return $this;
+    }
+
+    public function getPostId(): ?int
+    {
+        return $this->postId;
+    }
+
+    public function setPostId(int $postId): self
+    {
+        $this->postId = $postId;
 
         return $this;
     }

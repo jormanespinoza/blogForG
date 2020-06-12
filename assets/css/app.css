@@ -1,7 +1,3 @@
-body {
-    background-color: lightgray;
-}
-
 .container--front {
     padding-top: 80px;
     padding-bottom: 80px;
@@ -15,6 +11,10 @@ body {
 
 .comment-user-image {
     max-width: 70px;
+}
+
+.author-profile-image {
+    height: 40px;
 }
 
 .form-control.error {
@@ -33,4 +33,8 @@ body {
 #comment-frm button {
     opacity: .5;
     pointer-events: none;
+}
+
+.posts a:hover {
+    text-decoration: none;
 }

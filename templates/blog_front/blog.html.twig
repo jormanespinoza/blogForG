@@ -7,22 +7,51 @@
 
 {% block body %}
     <div class="col-12">
-        <div class="jumbotron bg-light">
-            <h1 class="display-4">G Blog</h1>
-            <p class="lead">Este es un blog de prueba | <small class="badge badge-secondary">Basando en Symfony 4</small></p>
+        <div class="jumbotron bg-dark">
+            <h1 class="display-4 text-light">G Blog</h1>
+            <p class="lead text-white">Este es un blog de prueba | <small class="badge badge-secondary">Basando en Symfony 4</small></p>
             <hr class="my-4">
-            <p>Combinando jQuery, Boostrap 4 e integrando Webpack Encore para el manejo de assets y demás librerías.</p>
-            <a class="btn btn-info btn-lg" href="https://github.com/jormanespinoza/blogForG" role="button" target="blank">Repositorio de Github</a>
+            <p class="text-white">Combinando jQuery, Boostrap 4 e integrando Webpack Encore para el manejo de assets y demás librerías.</p>
+            <a class="btn btn-dark btn-lg" href="https://github.com/jormanespinoza/blogForG" role="button" target="blank">Repositorio de Github</a>
         </div>
-
-        <hr class="my-4">
 
         <div class="row posts">
             {% for post in posts %}
-                <div class="col-sm-6">
+                <div class="col-lg-6 mb-5">
+                    <h3 class="text-dark mt-4">{{ post.title|capitalize }}</h3>
+
                     <a href="{{ path('post', {'url': post.url}) }}">
-                        {{ post.title|capitalize }}
+                        <div class="mb-3">
+                            {% if post.mainImage %}
+                                <img class="img-fluid thumbnail" src="{{ asset('images/post/' ~ post.mainImage) }}" alt="G Blog | {{ post.title }}">
+                            {% else %}
+                                <img class="img-fluid thumbnail" src="https://via.placeholder.com/1920x1080" alt="Imagen de la publicación">
+                            {% endif %}
+                        </div>
                     </a>
+
+                    <p class="lead d-inline justify-content-between">
+                        <div class="author">
+                            {% set profileImage = post.profileImage ? 'images/user/' ~ post.profileImage : 'build/images/user.png'  %}
+                            <img src="{{ asset(profileImage) }}" alt="{{ post.firstName ~ ' ' ~ post.lastName }}" class="user-profile-image rounded-circle">
+                            por <em>{{ post.firstName ~ ' ' ~ post.lastName }}</em> <small class="badge badge-sm badge-light ml-1">{{ post.createdAt|ago }}</small>
+                        </div>
+                        <ul class="list-group list-group-horizontal float-right">
+                            <li class="list-group-item bg-light">
+                                <i class="fa fa-comments-o" aria-hidden="true"></i>
+                                <span class="badge badge-info post-comments-count">{{ post.comments|length }}
+                            </li>
+                            <li class="list-group-item bg-light">
+                                <i class="fa fa-heart {{ post.likedByUser ? 'text-danger' : 'fa-heart-o' }}" aria-hidden="false"></i>
+                                <span class="badge badge-danger post-likes-count" data-post="{{ post.id }}">{{ post.likes }}</span>
+                                {% if app.user is not null %}
+                                    <small class="toggle-like text-danger" data-post="{{ post.id }}" data-liked="{{ post.likedByUser }}">Me gusta</small></a>
+                                {% endif %}
+                            </li>
+                        </ul>
+                    </p>
+
+                   <a href="{{ path('post', {'url': post.url}) }}" class="btn btn-sm btn-dark">Ver publicación</a>
                 </div>
             {% endfor %}
         </div>

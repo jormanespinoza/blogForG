@@ -14,6 +14,20 @@
     <body>
         {% block header %}
             {{ render(controller('App\\Controller\\SecurityController::getUserData', {'route': app.request.attributes.get('_route'), 'mode': 'front'} )) }}
+
+            <div class="col-12">
+                {% for message in app.flashes('success') %}
+                    <div class="alert alert-success">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+
+                {% for message in app.flashes('danger') %}
+                    <div class="alert alert-danger">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
         {% endblock %}
 
         <main class="container container--front">

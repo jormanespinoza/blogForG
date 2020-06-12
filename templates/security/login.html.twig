@@ -11,6 +11,20 @@
 {% block body %}
     <div class="container">
         <div class="row vh-100 d-flex align-items-center">
+            <div class="col-12 fixed-top">
+                {% for message in app.flashes('success') %}
+                    <div class="alert alert-success">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+
+                {% for message in app.flashes('danger') %}
+                    <div class="alert alert-danger">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+
             <div class="col-sm-6 col-10 offset-sm-3 offset-1 align-self-center">
                 <form method="post">
                      <a href="{{ path('blog') }}"><h1 class="mb-4 text-center text-white">G Blog</h1></a>
@@ -34,7 +48,7 @@
                     <div class="panel panel-default mb-3">
                         <div class="panel-body text-center text-info">
                             ¿Nuevo en G Blog? |
-                            <a class="text-right text-muted" href="{{ path('register') }}">Regístrate</a>
+                            <a class="text-right text-light" href="{{ path('register') }}">Regístrate</a>
                         </div>
                     </div>
 

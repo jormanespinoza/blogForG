@@ -29,13 +29,41 @@ class FrontController extends AbstractController
      */
     public function blog()
     {
+        // Get posts
+        $basePosts = $this->postRepository->findBy(['rejected' => false, 'visible' => true ], ['id' => 'DESC']);
+
+        $posts = array();
+        // Formating posts
+        foreach ($basePosts as $post) {
+            // Likes
+            $likeByUser = false;
+            if ($this->getUser()) {
+                $likeByUser = $this->likeRepository->findOneBy(['userId' => $this->getUser()->getId(), 'postId' => $post->getId(), 'liked' => true]);
+                $likeByUser = $likeByUser instanceof Like;
+            }
+
+            // Generar item con la información
+            $post = [
+                'id'                  => $post->getId(),
+                'title'               => $post->getTitle(),
+                'firstName'           => $post->getUser()->getFirstName(),
+                'lastName'            => $post->getUser()->getLastName(),
+                'profileImage'        => $post->getUser()->getProfile()->getProfileImage(),
+                'mainImage'           => $post->getMainImage(),
+                'body'                => $post->getBody(),
+                'url'                 => $post->getUrl(),
+                'createdAt'           => $post->getCreatedAt(),
+                'comments'            => $post->getComments(),
+                'likes'               => count($this->likeRepository->findBy(['postId' => $post->getId(), 'liked' => true])),
+                'likedByUser'         => $likeByUser
+            ];
+
+            // Add to array
+            array_push($posts, $post);
+        }
+
         return $this->render('blog_front/blog.html.twig', [
-            'posts' => $this->postRepository->findBy([
-                'rejected' => false, 'visible' => true
-            ],
-            [
-                'id' => 'DESC'
-            ])
+            'posts' => $posts
         ]);
     }
 
@@ -63,13 +91,18 @@ class FrontController extends AbstractController
         array_unshift($keywords, 'g', 'blog');
         $keywords = implode(',', $keywords);
 
-        $likeByUser = $this->likeRepository->findOneBy(['user' => $this->getUser(), 'post' => $post, 'liked' => true]);
+        // Likes
+        $likeByUser = false;
+        if ($this->getUser()) {
+            $likeByUser = $this->likeRepository->findOneBy(['userId' => $this->getUser()->getId(), 'postId' => $post->getId(), 'liked' => true]);
+            $likeByUser = $likeByUser instanceof Like;
+        }
 
         return $this->render('blog_front/post.html.twig', [
             'post' => $post,
             'keywords' =>$keywords,
-            'likes' => count($this->likeRepository->findBy(['post' => $post, 'liked' => true])),
-            'likedByUser' => $likeByUser instanceof Like
+            'likes' => count($this->likeRepository->findBy(['postId' => $post->getId(), 'liked' => true])),
+            'likedByUser' => $likeByUser
         ]);
     }
 
@@ -148,15 +181,15 @@ class FrontController extends AbstractController
         $post = $this->postRepository->findOneBy(['id' => $this->request->request->get('post')]);
         $liked = $this->request->request->get('liked') === 'true' ? true : false;
 
-        $like = $this->likeRepository->findOneBy(['user' => $this->getUser(), 'post' => $post]);
+        $like = $this->likeRepository->findOneBy(['userId' => $this->getUser()->getId(), 'postId' => $post->getId()]);
 
         if ($like instanceof Like) {
             $like->setLiked($liked);
             $like->setUpdatedAt(new \DateTime());
         } else {
             $like = new Like();
-            $like->setUser($this->getUser());
-            $like->setPost($post);
+            $like->setUserId($this->getUser()->getId());
+            $like->setPostId($post->getId());
             $like->setLiked($liked);
             $like->setCreatedAt(new \DateTime());
         }
@@ -164,7 +197,7 @@ class FrontController extends AbstractController
         $this->entityManager->persist($like);
         $this->entityManager->flush();
 
-        $postTotalLikes = count($this->likeRepository->findBy(['post' => $post, 'liked' => true]));
+        $postTotalLikes = count($this->likeRepository->findBy(['postId' => $post->getId(), 'liked' => true]));
 
         return new Response($postTotalLikes);
     }

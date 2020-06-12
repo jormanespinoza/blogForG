@@ -10,6 +10,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Form\RegisterType;
 use App\Entity\User;
+use App\Entity\Profile;
 
 class SecurityController extends AbstractController
 {
@@ -82,6 +83,11 @@ class SecurityController extends AbstractController
                 $password = $this->passwordEncoder->encodePassword($form->getData(), $password);
                 $form->getData()->setPassword($password);
                 $this->entityManager->persist($user);
+
+                $profile = new Profile();
+                $profile->setUser($user);
+                $this->entityManager->persist($profile);
+
                 $this->entityManager->flush();
 
                 $this->addFlash('success', 'Te regístraste con éxito!.');

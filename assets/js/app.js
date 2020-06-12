@@ -57,7 +57,7 @@ const likedPost = (element, post, liked) => {
         type: 'POST',
         data: `post=${post}&liked=${liked}`,
         success: (response) => {
-            $('.post-likes-count').text(response);
+            $(`.post-likes-count[data-post="${post}"]`).text(response);
             element.data('liked', liked);
             element.toggleClass('text-danger');
             element.siblings('.fa-heart').toggleClass('fa-heart-o text-danger');

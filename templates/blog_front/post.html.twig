@@ -12,11 +12,13 @@
 {% endblock %}
 
 {% block body %}
-    <div class="col-12">
+    <article class="col-12">
         <h1 class="mt-4">{{ post.title }}</h1>
 
         <p class="lead">
-          por <em>{{ post.user.firstName ~ ' ' ~ post.user.lastName }}</em> <small class="badge badge-sm badge-light ml-1">{{ post.createdAt|ago }}</small>
+            {% set profileImage = post.user.profile.profileImage ? 'images/user/' ~ post.user.profile.profileImage : 'build/images/user.png'  %}
+            <img src="{{ asset(profileImage) }}" alt="{{ post.user.firstName ~ ' ' ~ post.user.lastName }}" class="user-profile-image rounded-circle">
+            por <em>{{ post.user.firstName ~ ' ' ~ post.user.lastName }}</em> <small class="badge badge-sm badge-light ml-1">{{ post.createdAt|ago }}</small>
         </p>
 
         <hr>
@@ -31,7 +33,6 @@
 
         <hr>
 
-        <!-- Post Content -->
         <div class="content">
             {{ post.body|raw }}
         </div>
@@ -73,7 +74,7 @@
         <div id="post-comments">
             {{ render(controller('App\\Controller\\FrontController::getPostComments', {'post': post.id} )) }}
         </div>
-    </div>
+    </article>
 {% endblock %}
 
 {% block javascripts %}

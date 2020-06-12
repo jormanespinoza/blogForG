@@ -11,6 +11,20 @@
 {% block body %}
     <div class="container">
         <div class="row vh-100 d-flex align-items-center">
+            <div class="col-12 fixed-top">
+                {% for message in app.flashes('success') %}
+                    <div class="alert alert-success">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+
+                {% for message in app.flashes('danger') %}
+                    <div class="alert alert-danger">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+
             <div class="col-md-6 col-10 offset-md-3 offset-1 align-self-center">
                 {{ form_start(form) }}
                     {% for message in app.flashes('error') %}
@@ -26,7 +40,7 @@
                     <div class="panel panel-default mb-3">
                         <div class="panel-body text-center text-info">
                             ¿Éstas registrado? |
-                            <a class="pull-right text-muted" href="{{ path('app_login') }}">Ingresar</a>
+                            <a class="pull-right text-light" href="{{ path('app_login') }}">Ingresar</a>
                         </div>
                     </div>
 
