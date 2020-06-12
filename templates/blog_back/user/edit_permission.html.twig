@@ -1,0 +1,11 @@
+{% extends 'layout_back.html.twig' %}
+
+{% block title %}G Blog | Gestionar perfil{% endblock %}
+
+{% block body %}
+    <div class="col-12">
+        <h1 class="d-inline">Gestionar perfil</h1> <a class="btn btn-sm btn-outline-dark float-right" href="{{ path('profiles_manage', {'id': user.id}) }}">Volver</a>
+
+        {{ include('blog_back/user/_form.html.twig', {'button_label': 'Actualizar' }) }}
+    </div>
+{% endblock %}

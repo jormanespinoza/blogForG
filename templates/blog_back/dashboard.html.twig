@@ -34,7 +34,7 @@
                         <td>{{ post.id }}</td>
                         <td>
                             {% if post.mainImage %}
-                                <img class="post-main-image" src="{{ asset('images/post/' ~ post.mainImage) }}" alt="Post main image">
+                                <img class="post-main-image" src="{{ asset('images/post/' ~ post.mainImage) }}" alt="{{ post.title }} main image">
                             {% else %}
                                 <img class="post-main-image" src="https://via.placeholder.com/1920x1080" alt="Post main image fallback">
                             {% endif %}

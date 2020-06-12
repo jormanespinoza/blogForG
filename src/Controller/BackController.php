@@ -3,10 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\Profile;
 use App\Entity\Post;
 use App\Entity\Comment;
 use App\Form\UserType;
 use App\Form\EditPasswordType;
+use App\Form\ProfileType;
+use App\Form\ProfilePermissionType;
 use App\Form\PostType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -28,6 +31,7 @@ class BackController extends AbstractController
         $this->request = $requestStack->getCurrentRequest();
         $this->passwordEncoder = $passwordEncoder;
         $this->userRepository = $this->entityManager->getRepository(User::class);
+        $this->profileRepository = $this->entityManager->getRepository(Profile::class);
         $this->postRepository = $this->entityManager->getRepository(Post::class);
         $this->commentRepository = $this->entityManager->getRepository(Comment::class);
         $this->timezone = 'America/Argentina/Buenos_Aires';
@@ -241,16 +245,29 @@ class BackController extends AbstractController
         $form->handleRequest($this->request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Check if username or email is on use
+            $checkEmail = $this->userRepository->findOneBy(['email' =>  $form->getData()->getEmal()]);
+            if ($checkEmail instanceof User) {
+                $this->addFlash('danger', 'El email esta en uso');
+            }
+            $checkUsername = $this->userRepository->findOneBy(['username' =>  $form->getData()->getUsername()]);
+            if ($checkUsername instanceof User) {
+                $this->addFlash('danger', 'El nombre de usuario esta en uso');
+            }
+
             $form->getData()->setUpdatedAt(new \DateTime);
             $this->getDoctrine()->getManager()->flush();
 
             $this->addFlash('success', 'Perfil actualizado con éxito!');
 
-            return $this->redirectToRoute('dashboard');
+            return $this->redirectToRoute('profile', [
+                'id' => $user->getId()
+            ]);
         }
 
         return $this->render('blog_back/user/edit.html.twig', [
-            'user' => $user
+            'user' => $user,
+            'form' => $form->createView()
         ]);
     }
 
@@ -260,13 +277,12 @@ class BackController extends AbstractController
     public function editPassword(User $user)
     {
         // Checks if the usser is in the database
-        $checkedUser = $this->userRepository->findOneBy(['id' => $user]);
-         if (!$checkedUser instanceof User) {
+         if (!$user instanceof User) {
             $this->addFlash('danger', 'El usuario no existe');
 
             return $this->redirectToRoute('dashboard');
 
-         } elseif (!($this->getUser()->getId() === $checkedUser->getId())) {
+         } elseif (!($this->getUser()->getId() === $user->getId())) {
             // Previous line checks if the current user is the actual owner of the post
             $this->addFlash('danger', 'Acción no permitida');
 
@@ -290,7 +306,107 @@ class BackController extends AbstractController
 
         return $this->render('blog_back/user/edit_password.html.twig', [
             'user' => $user,
-            'form' => $form->createView(),
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/editar-imagen-perfil/{id}", name="profile_edit_image", methods="GET|POST")
+     */
+    public function editImage(User $user)
+    {
+        // Checks if the usser is in the database
+        $checkedUser = $this->userRepository->findOneBy(['id' => $user]);
+         if (!$checkedUser instanceof User) {
+            $this->addFlash('danger', 'El usuario no existe');
+
+            return $this->redirectToRoute('dashboard');
+
+         } elseif (!($this->getUser()->getId() === $checkedUser->getId())) {
+            // Previous line checks if the current user is the actual owner of the post
+            $this->addFlash('danger', 'Acción no permitida');
+
+            return $this->redirectToRoute('dashboard');
+        }
+
+        $profile = $this->profileRepository->findOneBy(['user' => $user]);
+
+        $form = $this->createForm(ProfileType::class, $profile);
+        $form->handleRequest($this->request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $password = $this->passwordEncoder->encodePassword($user, $user->getPassword());
+            $user->setPassword($password);
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
+            $this->addFlash('success', 'Imagen actualizada!');
+
+            return $this->redirectToRoute('profile', [
+                'id' => $user->getId()
+            ]);
+        }
+
+        return $this->render('blog_back/user/edit_image.html.twig', [
+            'user' => $user,
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/perfiles", name="profiles_manage", methods={"GET"})
+     */
+    public function profiles()
+    {
+        // Checks if the user is admin
+        $users = $this->userRepository->findBy([], ['id' => 'DESC']);
+
+        return $this->render('blog_back/user/profiles.html.twig', [
+            'users' => $users
+        ]);
+    }
+
+    /**
+     * @Route("/administrar/perfil/{id}", name="edit_permission", methods={"GET","POST"})
+     */
+    public function profilePermissions(User $user)
+    {
+        // Checks if the usser is in the database
+        if (!$user instanceof User) {
+            $this->addFlash('danger', 'El usuario no existe');
+
+            return $this->redirectToRoute('dashboard');
+
+        } elseif (
+            // Checking user access
+            // Is allowed when:
+            // User has the ROLE_SUPER_ADMIN
+            // The user that is beeing editing does not have a ROLE_SUPER_ADMIN
+            // * and if it has it can only be the current logged user
+            !in_array('ROLE_SUPER_ADMIN', $this->getUser()->getRoles()) ||
+            (in_array('ROLE_SUPER_ADMIN', $user->getRoles()) && $this->getUser()->getId() != $user->getId())
+        ) {
+            // Previous line checks if the current user is the actual owner of the post
+            $this->addFlash('danger', 'Acción no permitida');
+
+            return $this->redirectToRoute('dashboard');
+        }
+
+        $form = $this->createForm(ProfilePermissionType::class, $user);
+        $form->handleRequest($this->request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $password = $this->passwordEncoder->encodePassword($user, $user->getPassword());
+            $user->setPassword($password);
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
+            $this->addFlash('success', 'Cambios actualizados');
+
+            return $this->redirectToRoute('profiles_manage');
+        }
+
+        return $this->render('blog_back/user/edit_permission.html.twig', [
+            'user' => $user,
+            'form' => $form->createView()
         ]);
     }
 }

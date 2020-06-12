@@ -98,4 +98,15 @@ class SecurityController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    /* User Data */
+    public function getUserData($user, $route)
+    {
+        $user = $this->userRepository->findOneBy(['id' => $user]);
+
+        return $this->render('blog_back/includes/header.html.twig', [
+            'loggedUser' =>  $user,
+            'currentRoute' => $route
+        ]);
+    }
 }

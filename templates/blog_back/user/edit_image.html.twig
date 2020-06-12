@@ -1,0 +1,15 @@
+{% extends 'layout_back.html.twig' %}
+
+{% block title %}G Blog | Editar imagen{% endblock %}
+
+{% block body %}
+    <div class="col-12">
+        <h1 class="d-inline">Editar imagen</h1> <a class="btn btn-sm btn-outline-dark float-right" href="{{ path('profile', {'id': user.id}) }}">Volver</a>
+
+        <div class="row mt-5">
+            <div class="col-sm-6 offset-sm-3">
+                {{ include('blog_back/user/_form.html.twig', {'button_label': 'Actualizar' }) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

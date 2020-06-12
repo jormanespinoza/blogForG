@@ -7,14 +7,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\HttpFoundation\File\File;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
-use Symfony\Component\Validator\Constraints as Assert;
 use App\Entity\Post;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * @Vich\Uploadable
  */
 class User implements UserInterface
 {
@@ -70,25 +67,6 @@ class User implements UserInterface
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $profileImage;
-
-    /**
-     * @Assert\File(
-     *      mimeTypes = {"image/jpeg", "image/x-citrix-jpeg", "image/png", "image/x-png", "image/x-citrix-png"},
-     *      mimeTypesMessage = "Por favor, sube un formato válido (jpg/.png)",
-     *      maxSize = "2048k"
-     * )
-     * @Assert\Image(
-     *      minWidth = 250
-     * )
-     * @Vich\UploadableField(mapping="user", fileNameProperty="profileImage", size="profileImageSize")
-     * @var File
-     */
-    private $profileImageFile;
-
-    /**
      * @ORM\Column(type="datetime")
      *
      * @var \DateTime
@@ -116,6 +94,11 @@ class User implements UserInterface
      * @ORM\Column(type="boolean")
      */
     private $isActive;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Profile::class, mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $profile;
 
     public function __construct()
     {
@@ -224,43 +207,6 @@ class User implements UserInterface
         // $this->plainPassword = null;
     }
 
-    /**
-     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $profileImage
-     */
-    public function setProfileImageFile(?File $profileImage = null): void
-    {
-        $this->profileImageFile = $profileImage;
-
-        if (null !== $profileImage) {
-            $this->updateDate();
-        }
-    }
-
-    public function getProfileImageFile(): ?File
-    {
-        return $this->profileImageFile;
-    }
-
-    public function setProfileImage(?string $profileImage): void
-    {
-        $this->profileImage = $profileImage;
-    }
-
-    public function getProfileImage(): ?string
-    {
-        return $this->profileImage;
-    }
-
-    public function setProfileImageSize(?int $profileImageSize): void
-    {
-        $this->profileImageSize = $profileImageSize;
-    }
-
-    public function getProfileImageSize(): ?int
-    {
-        return $this->profileImageSize;
-    }
-
     public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
@@ -283,18 +229,6 @@ class User implements UserInterface
         $this->updatedAt = $updatedAt;
 
         return $this;
-    }
-
-    /**
-     * Este método actualiza la fecha de edición del post
-     * esto es necesario en caso de actualizar <solo> la imagen principal
-     * de esta forma el listener de cambio de imagen se dispara actualizando la misma
-     */
-    public function updateDate()
-    {
-        // It is required that at least one field changes if you are using doctrine
-        // otherwise the event listeners won't be called and the file is lost
-        $this->updatedAt = new \DateTimeImmutable();
     }
 
     /**
@@ -367,6 +301,23 @@ class User implements UserInterface
     public function setIsActive(bool $isActive): self
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    public function getProfile(): ?Profile
+    {
+        return $this->profile;
+    }
+
+    public function setProfile(Profile $profile): self
+    {
+        $this->profile = $profile;
+
+        // set the owning side of the relation if necessary
+        if ($profile->getUser() !== $this) {
+            $profile->setUser($this);
+        }
 
         return $this;
     }

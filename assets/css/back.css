@@ -14,6 +14,10 @@ a.copyrights:hover {
     margin-right: 5px;
 }
 
+.user-profile-image--md {
+    height: 50px;
+}
+
 /* Cropper */
 .cropper img {
     width: 100%;

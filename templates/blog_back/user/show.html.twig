@@ -9,11 +9,12 @@
 
     <div class="col-sm-4">
         <div class="mb-3">
-            {% if user.profileImage %}
-                <img class="img-fluid rounded-circle" src="{{ asset('images/user/' ~ app.user.profileImage) }}" alt="{{ user.fisrtName ~ ' ' ~ user.lastName }} profile image">
+            {% if user.profile.profileImage %}
+                <img class="img-fluid rounded-circle" src="{{ asset('images/user/' ~ user.profile.profileImage) }}" alt="{{ user.firstName ~ ' ' ~ user.lastName }} profile image">
             {% else %}
                 <img class="img-fluid rounded-circle" src="{{ asset('build/images/user.png') }}" alt="Profile image fallback">
             {% endif %}
+             <a class="btn btn-sm btn-outline-dark float-right" href="{{ path('profile_edit_image', {'id': user.id}) }}">Editar imagen</a>
         </div>
     </div>
 
@@ -78,7 +79,7 @@
         </h2>
 
         {% for comment in comments %}
-            <div class="media">
+            <div class="media mb-3">
                 {% if comment.post.mainImage %}
                     <img class="comment-user-image mr-3" src="{{ asset('images/user' ~ comment.post.mainImage) }}" class="mr-3" alt="G Blog | {{ comment.post.title }}">
                 {% else %}

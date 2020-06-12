@@ -1,13 +1,11 @@
 {% extends 'layout_back.html.twig' %}
 
-{% block title %}Edit User{% endblock %}
+{% block title %}G Blog | Editar información{% endblock %}
 
 {% block body %}
-    <h1>Edit User</h1>
+    <div class="col-12">
+        <h1 class="d-inline">Editar información</h1> <a class="btn btn-sm btn-outline-dark float-right" href="{{ path('profile', {'id': user.id}) }}">Volver</a>
 
-    {{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('user_index') }}">back to list</a>
-
-    {{ include('user/_delete_form.html.twig') }}
+        {{ include('blog_back/user/_form.html.twig', {'button_label': 'Actualizar', 'button_class': 'primary'}) }}
+    </div>
 {% endblock %}

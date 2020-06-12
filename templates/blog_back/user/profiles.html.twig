@@ -1,0 +1,70 @@
+{% extends 'layout_back.html.twig' %}
+
+{% block title %}G Blog - Gestionar publicaciones{% endblock %}
+
+{% block body %}
+    <div class="col-12">
+        <div class="mb-3">
+            <h1 class="d-inline">Gestionar perfiles</h1>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Imagen</th>
+                        <th>Nombre</th>
+                        <th>Roles</th>
+                        <th>Creado</th>
+                        <th>Actualizado</th>
+                        <th>Acciones</th>
+                    </tr>
+                    <tr colspan="11"></tr>
+                </thead>
+                <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>
+                            {% if user.profile.profileImage %}
+                                <img class="user-profile-image--md img-fluid rounded-circle" src="{{ asset('images/user/' ~ user.profile.profileImage) }}" alt="{{ user.firstName ~ ' ' ~ user.lastName }} profile image">
+                            {% else %}
+                                <img class="user-profile-image--md img-fluid rounded-circle" src="{{ asset('build/images/user.png') }}" alt="Profile image fallback">
+                            {% endif %}
+                        </td>
+                        <td>
+                            <em>{{ user.firstName ~ ' ' ~ user.lastName }}</em>
+                        </td>
+                        <td>
+                            {% for role in user.roles %}
+                                {% if role == 'ROLE_SUPER_ADMIN' %}
+                                    <span class="badge badge-info">super-administrador</span>
+                                {% elseif role == 'ROLE_ADMIN' %}
+                                    <span class="badge badge-dark">administrador</span>
+                                {% else %}
+                                    <span class="badge badge-primary">usuario</span>
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+
+                        <td>{{ user.createdAt ? user.createdAt|ago : '' }}</td>
+                        <td>{{ user.updatedAt ? user.updatedAt|ago : '' }}</td>
+                        <td>
+                            <div class="d-flex align-self-start">
+                                {% if 'ROLE_SUPER_ADMIN' not in user.roles|json_encode or user.id == app.user.id %}
+                                    <a class="btn btn-sm btn-secondary" href="{{ path('edit_permission', {'id': user.id}) }}">Editar</a>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="11"><blockquote>No hay publicaciones de momento</blockquote></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+     </div>
+{% endblock %}

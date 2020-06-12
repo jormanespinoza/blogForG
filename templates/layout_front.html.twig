@@ -13,16 +13,14 @@
 
     <body>
         {% block header %}
-            {% if app.user %}
-            <div class="mb-3">
-                {{ app.user.firstName ~ ' ' ~ app.user.lastName }}
+
                 <a href="{{ path('dashboard') }}">Mi Cuenta</a>
                 <a href="{{ path('app_logout') }}">Logout</a>
-            </div>
-            {% else %}
+
+
                 <a href="{{ path('app_login') }}">Ingresar</a>
                 <a href="{{ path('register') }}">Registrame</a>
-            {% endif %}
+
         {% endblock %}
 
         {% block body %}{% endblock %}

@@ -1,0 +1,39 @@
+ <header>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" href="{{ path('blog') }}">G Blog</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item{{ currentRoute == 'dashboard' ? ' active' : '' }}">
+                    <a class="nav-link" href="{{ path('dashboard') }}">Mis publicaciones</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {% set profileImage = loggedUser.profile.profileImage ? 'images/user/' ~ loggedUser.profile.profileImage : 'build/images/user.png'  %}
+                        <img src="{{ asset(profileImage) }}" alt="User profile image" class="user-profile-image rounded-circle">
+
+                        {{ loggedUser.firstName ~ ' ' ~ loggedUser.lastName }}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown01">
+                        <a class="dropdown-item{{
+                            currentRoute == 'profile' or
+                            currentRoute == 'profile_edit' or
+                            currentRoute == 'profile_edir_password' or
+                            currentRoute == 'profile_edir_image' ? ' active' : '' }}" href="{{ path('profile', {'id': loggedUser.getId() }) }}">Mi perfil</a>
+                        <a class="dropdown-item" href="{{ path('app_logout') }}">Cerrar sesión</a>
+                    </div>
+                </li>
+            </ul>
+
+            {% if 'ROLE_ADMIN' in loggedUser.getRoles() == true %}
+                <a class="btn btn.sm btn-outline-{{ currentRoute == 'post_manage' ? 'light' : 'secondary' }} float-right" href="{{ path('post_manage') }}">Gestionar publicaciones</a>
+            {% endif %}
+            {% if 'ROLE_SUPER_ADMIN' in loggedUser.getRoles() == true %}
+                <a class="btn btn.sm btn-outline-{{ currentRoute == 'post_manage' ? 'light' : 'secondary' }} float-right" href="{{ path('profiles_manage') }}">Gestionar perfiles</a>
+            {% endif %}
+        </div>
+    </nav>
+</header>
