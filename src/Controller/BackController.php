@@ -43,7 +43,7 @@ class BackController extends AbstractController
      */
     public function index()
     {
-        // Checks if the user is admin
+        // Get posts
         $posts = $this->postRepository->findBy(['user' => $this->getUser()], ['id' => 'DESC']);
 
         return $this->render('blog_back/dashboard.html.twig', [
@@ -276,7 +276,7 @@ class BackController extends AbstractController
      */
     public function editPassword(User $user)
     {
-        // Checks if the usser is in the database
+        // Checks if the user is in the database
          if (!$user instanceof User) {
             $this->addFlash('danger', 'El usuario no existe');
 
@@ -315,7 +315,7 @@ class BackController extends AbstractController
      */
     public function editImage(User $user)
     {
-        // Checks if the usser is in the database
+        // Checks if the user is in the database
         $checkedUser = $this->userRepository->findOneBy(['id' => $user]);
          if (!$checkedUser instanceof User) {
             $this->addFlash('danger', 'El usuario no existe');
@@ -357,7 +357,7 @@ class BackController extends AbstractController
      */
     public function profiles()
     {
-        // Checks if the user is admin
+        // Get users
         $users = $this->userRepository->findBy([], ['id' => 'DESC']);
 
         return $this->render('blog_back/user/profiles.html.twig', [
@@ -370,7 +370,7 @@ class BackController extends AbstractController
      */
     public function profilePermissions(User $user)
     {
-        // Checks if the usser is in the database
+        // Checks if the user is in the database
         if (!$user instanceof User) {
             $this->addFlash('danger', 'El usuario no existe');
 
@@ -380,7 +380,7 @@ class BackController extends AbstractController
             // Checking user access
             // Is allowed when:
             // User has the ROLE_SUPER_ADMIN
-            // The user that is beeing editing does not have a ROLE_SUPER_ADMIN
+            // The user that is beeing edited does not have a ROLE_SUPER_ADMIN
             // * and if it has it can only be the current logged user
             !in_array('ROLE_SUPER_ADMIN', $this->getUser()->getRoles()) ||
             (in_array('ROLE_SUPER_ADMIN', $user->getRoles()) && $this->getUser()->getId() != $user->getId())

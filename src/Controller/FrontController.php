@@ -42,7 +42,7 @@ class FrontController extends AbstractController
                 $likeByUser = $likeByUser instanceof Like;
             }
 
-            // Generar item con la información
+            // Generate item post with its info
             $post = [
                 'id'                  => $post->getId(),
                 'title'               => $post->getTitle(),

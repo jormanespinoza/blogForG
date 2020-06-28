@@ -5,7 +5,6 @@ const $ = require('jquery');
 
 import 'bootstrap';
 import './vendor/jquery.validate.js';
-
 import 'font-awesome/css/font-awesome.min.css';
 
 const countComments = (postId) => {
@@ -30,6 +29,7 @@ const initCommentFrm = () => {
             errorPlacement: (error, element) => {},
             success: (label, element) => {},
             submitHandler: () => {
+                // Update and disable send button
                 $('#comment-frm button').text('Enviando...').addClass('disabled');
                 $.ajax({
                     url: '/add-new-comment',
@@ -42,6 +42,7 @@ const initCommentFrm = () => {
                         $('#post-comments').html(response);
                         // Update comment amount indicator
                         countComments($('#post').val());
+                        // Restore send button
                         $('#comment-frm button').text('Enviar').removeClass('disabled');
                     }
                 });
@@ -66,7 +67,7 @@ const likedPost = (element, post, liked) => {
     });
 };
 
-$(window).on('load', () => initCommentFrm());
+$(window).on('load', initCommentFrm());
 
 $(() => {
     $('.toggle-like').on('click', function () {
