@@ -11,7 +11,7 @@
 
 ## Frameworks
 * Symfony 4
-* Boostrap 4
+* Bootstrap 4
 
 ## Módulos Principales
 
