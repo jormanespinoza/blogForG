@@ -36,10 +36,10 @@ class FrontController extends AbstractController
         // Formating posts
         foreach ($basePosts as $post) {
             // Likes
-            $likeByUser = false;
+            $likedByUser = false;
             if ($this->getUser()) {
-                $likeByUser = $this->likeRepository->findOneBy(['userId' => $this->getUser()->getId(), 'postId' => $post->getId(), 'liked' => true]);
-                $likeByUser = $likeByUser instanceof Like;
+                $likedByUser = $this->likeRepository->findOneBy(['userId' => $this->getUser()->getId(), 'postId' => $post->getId(), 'liked' => true]);
+                $likedByUser = $likedByUser instanceof Like;
             }
 
             // Generate item post with its info
@@ -55,7 +55,7 @@ class FrontController extends AbstractController
                 'createdAt'           => $post->getCreatedAt(),
                 'comments'            => $post->getComments(),
                 'likes'               => count($this->likeRepository->findBy(['postId' => $post->getId(), 'liked' => true])),
-                'likedByUser'         => $likeByUser
+                'likedByUser'         => $likedByUser
             ];
 
             // Add to array
@@ -202,4 +202,3 @@ class FrontController extends AbstractController
         return new Response($postTotalLikes);
     }
 }
-

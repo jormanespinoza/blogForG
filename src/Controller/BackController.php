@@ -106,7 +106,6 @@ class BackController extends AbstractController
             $this->addFlash('danger', 'No existen publicaciones con ese identificador');
 
             return $this->redirectToRoute('dashboard');
-
         } elseif (!($this->getUser()->getId() === $checkedPost->getUser()->getId())) {
             // Previous line checks if the current user is the actual owner of the post
             $this->addFlash('danger', 'Acción no permitida: solo el autor de la publicación puede editarla');
@@ -206,7 +205,6 @@ class BackController extends AbstractController
             $this->addFlash('danger', 'El usuario no existe');
 
             return $this->redirectToRoute('dashboard');
-
         } elseif (!($this->getUser()->getId() === $checkedUser->getId())) {
             // Previous line checks if the current user is the actual owner of the post
             $this->addFlash('danger', 'Acción no permitida');
@@ -233,7 +231,6 @@ class BackController extends AbstractController
             $this->addFlash('danger', 'El usuario no existe');
 
             return $this->redirectToRoute('dashboard');
-
         } elseif (!($this->getUser()->getId() === $checkedUser->getId())) {
             // Previous line checks if the current user is the actual owner of the post
             $this->addFlash('danger', 'Acción no permitida');
@@ -281,7 +278,6 @@ class BackController extends AbstractController
             $this->addFlash('danger', 'El usuario no existe');
 
             return $this->redirectToRoute('dashboard');
-
          } elseif (!($this->getUser()->getId() === $user->getId())) {
             // Previous line checks if the current user is the actual owner of the post
             $this->addFlash('danger', 'Acción no permitida');
@@ -321,7 +317,6 @@ class BackController extends AbstractController
             $this->addFlash('danger', 'El usuario no existe');
 
             return $this->redirectToRoute('dashboard');
-
          } elseif (!($this->getUser()->getId() === $checkedUser->getId())) {
             // Previous line checks if the current user is the actual owner of the post
             $this->addFlash('danger', 'Acción no permitida');
@@ -375,7 +370,6 @@ class BackController extends AbstractController
             $this->addFlash('danger', 'El usuario no existe');
 
             return $this->redirectToRoute('dashboard');
-
         } elseif (
             // Checking user access
             // Is allowed when:

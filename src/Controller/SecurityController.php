@@ -23,8 +23,8 @@ class SecurityController extends AbstractController
         $this->entityManager = $entityManagerInterface;
         $this->authenticationUtils = $authenticationUtils;
         $this->request = $requestStack->getCurrentRequest();
-        $this->userRepository = $this->entityManager->getRepository(User::class);
         $this->passwordEncoder = $passwordEncoder;
+        $this->userRepository = $this->entityManager->getRepository(User::class);
     }
 
     /**
