@@ -72,7 +72,6 @@ $(window).on('load', initCommentFrm());
 $(() => {
     $('.toggle-like').on('click', function () {
         const liked = !$(this).data('liked');
-
         likedPost($(this), $(this).data('post'), liked);
     });
 });
